@@ -2,7 +2,7 @@
 title: Through the Looking Glass - Neural 3D Reconstruction of Transparent Shapes
 description: A summary of the paper "Through the Looking Glass" by Li et al. (2020)
 categories: [computer vision]
-image: images\post\2021-07-16-Neural-3D-Reconstruction-of-Transparent-Shapes\banner.png
+image: images/post/2021-07-16-Neural-3D-Reconstruction-of-Transparent-Shapes/banner.png
 layout: post
 toc: false
 ---
