@@ -3,7 +3,7 @@ toc: true
 layout: post
 description: A summary
 categories: [computer vision]
-title: Through the Looking Glass: Neural 3D Reconstruction of Transparent Shapes
+title: Through the Looking Glass - Neural 3D Reconstruction of Transparent Shapes
 ---
 # Through the Looking Glass: Neural 3D Reconstruction of Transparent Shapes
 
