@@ -1,1 +1,1 @@
-Sitemap: https://chriswallenwein.github.io/blog/sitemap.xml
+Sitemap: https://blog.cwallenwein.com/sitemap.xml
