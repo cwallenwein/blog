@@ -83,9 +83,7 @@ Given a set of segmentation masks and their corresponding viewpoint, the space c
 The model utilizes differentiable rendering to produce high-quality images of transparent objects from a given viewpoint. The renderer is physics-based and uses the Fresnel equations and Snell's law to calculate complex light paths. Differentiable rendering is an exciting, new field that emerged in the last years as it allows for backpropagation through the rendering layer. This video [^52] provides a good introductory overview of the topic.
 To render the image from one viewpoint, the differentiable rendering layer requires the environment map $E$ and the estimated normal maps $N^1$, $N^2$ for this particular viewpoint. It outputs the rendered image, a binary mask indicating points where total internal reflection occurred and the pointwise rendering error with masked out environment. The rendering error map is calculated by comparing the rendered image to the ground truth image, cf. Fig. 5.
 
-![](https://i.imgur.com/1HxaGOX.png)
-![](https://i.imgur.com/gFGKWKM.png)
-![](https://i.imgur.com/Hb7HPv2.png)
+![](https://i.imgur.com/BHNdgq6.png)
 ###### Fig. 5: Rendered image, total internal reflection mask and rendering error for a transparent object
 
 
