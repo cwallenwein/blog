@@ -1,5 +1,5 @@
 ---
-toc: true
+toc: false
 layout: post
 description: A summary
 categories: [computer vision]
