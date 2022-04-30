@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Through the Looking Glass - Neural 3D Reconstruction of Transparent Shapes | fastpages</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Through the Looking Glass - Neural 3D Reconstruction of Transparent Shapes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A summary" />
+<meta property="og:description" content="A summary" />
+<link rel="canonical" href="https://blog.cwallenwein.com/computer%20vision/2021/07/16/Neural-3D-Reconstruction-of-Transparent-Shapes.html" />
+<meta property="og:url" content="https://blog.cwallenwein.com/computer%20vision/2021/07/16/Neural-3D-Reconstruction-of-Transparent-Shapes.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-16T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Through the Looking Glass - Neural 3D Reconstruction of Transparent Shapes" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2021-07-16T00:00:00-05:00","datePublished":"2021-07-16T00:00:00-05:00","description":"A summary","headline":"Through the Looking Glass - Neural 3D Reconstruction of Transparent Shapes","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.cwallenwein.com/computer%20vision/2021/07/16/Neural-3D-Reconstruction-of-Transparent-Shapes.html"},"url":"https://blog.cwallenwein.com/computer%20vision/2021/07/16/Neural-3D-Reconstruction-of-Transparent-Shapes.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.cwallenwein.com/feed.xml" title="fastpages" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">fastpages</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Through the Looking Glass - Neural 3D Reconstruction of Transparent Shapes</h1><p class="page-description">A summary</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-07-16T00:00:00-05:00" itemprop="datePublished">
+        Jul 16, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      15 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="//categories/#computer vision">computer vision</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul id="toc" class="section-nav">
+<li class="toc-entry toc-h1"><a href="#through-the-looking-glass-neural-3d-reconstruction-of-transparent-shapes">Through the Looking Glass: Neural 3D Reconstruction of Transparent Shapes</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#fig-1-reconstruction-of-a-transparent-object">Fig. 1: Reconstruction of a transparent object</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#introduction">Introduction</a></li>
+<li class="toc-entry toc-h1"><a href="#previous-work">Previous work</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#physics-based-approaches">Physics-based approaches</a></li>
+<li class="toc-entry toc-h2"><a href="#deep-learning-based-approaches">Deep Learning-based approaches</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#important-concepts">Important concepts</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#normals-and-color-mapping">Normals and color mapping</a></li>
+<li class="toc-entry toc-h2"><a href="#optics-fundamentals">Optics fundamentals</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#fig-2-superposition-of-reflected-and-refracted-environment-images-on-a-window-pane">Fig. 2: Superposition of reflected and refracted environment images on a window pane.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#proposed-method">Proposed method</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#problem-setup">Problem setup</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#fig-3-problem-setup">Fig. 3: Problem setup</a></li>
+<li class="toc-entry toc-h6"><a href="#fig-4-light-path-visualization-with-local-surface-normals-n1-and-n2">Fig. 4: Light path visualization with local surface normals $N^1$ and $N^2$</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#overview">Overview</a></li>
+<li class="toc-entry toc-h2"><a href="#space-carving">Space carving</a></li>
+<li class="toc-entry toc-h2"><a href="#normal-prediction">Normal prediction</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#differentiable-rendering-layer">Differentiable rendering layer</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#fig-5-rendered-image-total-internal-reflection-mask-and-rendering-error-for-a-transparent-object">Fig. 5: Rendered image, total internal reflection mask and rendering error for a transparent object</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#cost-volume">Cost volume</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#fig-6-the-cost-volume">Fig. 6: The cost volume</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#normal-prediction-network">Normal prediction network</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#point-cloud-reconstruction">Point cloud reconstruction</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#feature-mapping">Feature mapping</a></li>
+<li class="toc-entry toc-h3"><a href="#modified-pointnet">Modified PointNet++</a></li>
+<li class="toc-entry toc-h3"><a href="#poisson-surface-reconstruction">Poisson surface reconstruction</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#evaluation">Evaluation</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#qualitative-results">Qualitative results</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#fig-7-qualitative-results-of-li-et-al">Fig. 7: Qualitative results of Li et al.</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#testing-on-real-world-data">Testing on real-world data</a></li>
+<li class="toc-entry toc-h2"><a href="#comparison-to-latest-sota">Comparison to latest SOTA</a>
+<ul>
+<li class="toc-entry toc-h6"><a href="#fig-8-qualitative-comparison-between-li-et-al-and-lyu-et-al-">Fig. 8: Qualitative comparison between Li et al.1 and Lyu et al. 18</a></li>
+<li class="toc-entry toc-h6"><a href="#table-1-reconstruction-error-of-li-et-al-and-lyu-et-al-based-on-table-1-of-">Table 1: Reconstruction error of Li et al.1 and Lyu et al.18 (based on Table 1 of 18)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+<li class="toc-entry toc-h1"><a href="#references">References</a></li>
+</ul><h1 id="through-the-looking-glass-neural-3d-reconstruction-of-transparent-shapes">
+<a class="anchor" href="#through-the-looking-glass-neural-3d-reconstruction-of-transparent-shapes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Through the Looking Glass: Neural 3D Reconstruction of Transparent Shapes</h1>
+
+<p><img src="https://i.imgur.com/3F8J1mc.gif" alt=""></p>
+<h6 id="fig-1-reconstruction-of-a-transparent-object">
+<a class="anchor" href="#fig-1-reconstruction-of-a-transparent-object" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fig. 1: Reconstruction of a transparent object</h6>
+
+<h1 id="introduction">
+<a class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
+<p>Obtaining the 3D shape of an object from a set of images is a well-studied problem. The corresponding research field is called Multi-view 3D-reconstruction. Many proposed techniques achieve impressive results but fail to reconstruct transparent objects. Image-based transparent shape reconstruction is an ill-posed problem. Reflection and refraction lead to complex light paths and small changes in shape might lead to completely different appearance. Different solutions to this problem have been proposed, but the acquisition setup is often tedious and requires a complicated setup. In 2020 a group of researchers from the University of California in San Diego state, they have found a technique that enables the reconstruction of transparent objects using only a few unconstrained images taken with a smartphone. This blog post will provide an in-depth look into the paper “Through the Looking Glass: Neural 3D Reconstruction of Transparent Shapes” by Zhengqin Li, Yu-Ying Yeh and Manmohan Chandraker<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
+
+<h1 id="previous-work">
+<a class="anchor" href="#previous-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous work</h1>
+<p>Transparent object reconstruction has been studied for more than 30 years <sup id="fnref:34" role="doc-noteref"><a href="#fn:34" class="footnote" rel="footnote">2</a></sup>. A full history of related research is out of scope. Approaches were typically based on physics, but recently also deep learning researchers have attempted to find a solution. “Through the looking glass” is able to solve this challenging problem by combining the best of both worlds. The following is a brief overview of important work of the last years. A common characteristic of both approaches is the use of a synthetic dataset.</p>
+
+<h2 id="physics-based-approaches">
+<a class="anchor" href="#physics-based-approaches" aria-hidden="true"><span class="octicon octicon-link"></span></a>Physics-based approaches</h2>
+<p>The foundation of most research is the vast array of knowledge in the field of optics. The authors use this knowledge to formulate their mathematical models and improve them utilizing one manifestation of optimization algorithms. Recent research <sup id="fnref:30" role="doc-noteref"><a href="#fn:30" class="footnote" rel="footnote">3</a></sup>,<sup id="fnref:31" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup> uses synthetic datasets to overcome the hurdle of acquiring enough training data. This comes at the cost of a mismatch between the performance on real-world data compared to synthetic datasets. When testing on real-world data, these approaches typically require a complicated setup including multiple cameras taking images from various fixed viewpoints.
+A paper from 2018 by Wu et al. <sup id="fnref:31:1" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup> captures 22 images of the transparent object in front of predefined background patterns. The camera viewpoints are fixed, but the transparent object rotates on a turntable.</p>
+
+<p>The underlying optics concepts used in physics-based papers are fundamental to understand “Through the looking glass”. The section <a href="#Optics-fundamentals">Overview of optics fundamentals</a> will introduce these topics.</p>
+
+<h2 id="deep-learning-based-approaches">
+<a class="anchor" href="#deep-learning-based-approaches" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deep Learning-based approaches</h2>
+<p>The setup of deep learning-based approaches is usually simpler. Using RGB <sup id="fnref:32" role="doc-noteref"><a href="#fn:32" class="footnote" rel="footnote">5</a></sup>/RGB-D<sup id="fnref:33" role="doc-noteref"><a href="#fn:33" class="footnote" rel="footnote">6</a></sup> images of the transparent object, models learn to predict e.g. the segmentation mask, the depth map and surface normals. These models are typically based on Encoder-Decoder CNNs. Deep learning methods inherently need far more data and therefore also leverage synthetic datasets.</p>
+
+<h1 id="important-concepts">
+<a class="anchor" href="#important-concepts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Important concepts</h1>
+<p>Prior to introducing the proposed methods, some basic concepts from the fields of optics and 3D graphics shall be clarified.</p>
+<h2 id="normals-and-color-mapping">
+<a class="anchor" href="#normals-and-color-mapping" aria-hidden="true"><span class="octicon octicon-link"></span></a>Normals and color mapping</h2>
+<p>A normal is a vector that is perpendicular to some object. A surface normal is a vector that is perpendicular to a surface and it can be represented like any other vector $[X,Y,Z]$.</p>
+
+<p>A normal map encodes the surface normal for each point in an image. The color at a certain point indicates the direction of the surface at this particular point. The color at each point is described by the three color channels $[R,G,B]$. A normal map simply maps the $[X,Y,Z]$-direction of the surface normals to the color channels.</p>
+
+<h2 id="optics-fundamentals">
+<a class="anchor" href="#optics-fundamentals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optics fundamentals</h2>
+<p><img src="https://i.imgur.com/CjBbxEq.png" alt=""></p>
+<h6 id="fig-2-superposition-of-reflected-and-refracted-environment-images-on-a-window-pane">
+<a class="anchor" href="#fig-2-superposition-of-reflected-and-refracted-environment-images-on-a-window-pane" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fig. 2: Superposition of reflected and refracted environment images on a window pane.</h6>
+
+<p>Light propagates on straight paths through vacuum, air and homogeneous transparent materials. At the interface of two optically different materials, the propagation changes: In most configurations, a single path is split into two paths. For large angles, all light reflects back into the object and no light refracts. This is called total internal reflection. Snell’s law of refraction and the Fresnel equations allow calculating precise angles of reflection and refraction and the fraction of reflected and refracted light. In an image acquisition situation, beam splitting creates superimposed images. The higher the index of refraction (IOR, denoted $\text{n}_1$ and $\text{n}_2$ in Fig. 2), the slower the light travels in the optically dense matter, the stronger the surface reflection and the higher the angles of refraction and the shift of the refracted image. More about these concepts can be found at <sup id="fnref:41" role="doc-noteref"><a href="#fn:41" class="footnote" rel="footnote">7</a></sup>, <sup id="fnref:40" role="doc-noteref"><a href="#fn:40" class="footnote" rel="footnote">8</a></sup> and <sup id="fnref:42" role="doc-noteref"><a href="#fn:42" class="footnote" rel="footnote">9</a></sup>.</p>
+
+<h1 id="proposed-method">
+<a class="anchor" href="#proposed-method" aria-hidden="true"><span class="octicon octicon-link"></span></a>Proposed method</h1>
+<h2 id="problem-setup">
+<a class="anchor" href="#problem-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Problem setup</h2>
+<p><img src="https://i.imgur.com/j50ia0g.png" alt=""></p>
+<h6 id="fig-3-problem-setup">
+<a class="anchor" href="#fig-3-problem-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fig. 3: Problem setup</h6>
+
+<p>The inputs to the model are</p>
+<ul>
+  <li>5-20 unconstrained images of the transparent object,</li>
+  <li>the corresponding silhouette segmentation masks for all images,</li>
+  <li>the environment map,</li>
+  <li>the index of refraction of the transparent material.</li>
+</ul>
+
+<p><img src="https://i.imgur.com/1bG0ran.png" alt=""></p>
+<h6 id="fig-4-light-path-visualization-with-local-surface-normals-n1-and-n2">
+<a class="anchor" href="#fig-4-light-path-visualization-with-local-surface-normals-n1-and-n2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fig. 4: Light path visualization with local surface normals $N^1$ and $N^2$</h6>
+
+<p>The proposed method limits the light path simulation to a maximum of two bounces. The camera looks onto the transparent object.</p>
+
+<h2 id="overview">
+<a class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
+<p>The authors propose the following contributions:</p>
+<ul>
+  <li>A physics-based network that estimates the front and back normals for a single viewpoint. It leverages a fully differentiable, also physics-based, rendering layer.</li>
+  <li>Physics-based point cloud reconstruction using the predicted normals.</li>
+  <li>A publicly available synthetic dataset <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">10</a></sup> containing 3600 transparent objects. Each object is captured in 35 images from random viewpoints, resulting in a total of 120,000 high-quality images.</li>
+</ul>
+
+<p>The model starts off by initializing a point cloud of the transparent shape. This point cloud is inaccurate but serves as a good starting point for further optimization. In the next step, the physics-based neural network estimates the normal maps $N^1$ and $N^2$ for each viewpoint. The predicted, viewpoint-specific features, will then be mapped onto the point cloud. Finally, the authors use point cloud reconstruction to recover the full geometry of the transparent shape. The model is trained using the synthetic dataset and can be tested on real-world data. The code is publicly available on Github <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">11</a></sup>.</p>
+
+<h2 id="space-carving">
+<a class="anchor" href="#space-carving" aria-hidden="true"><span class="octicon octicon-link"></span></a>Space carving</h2>
+<p>Given a set of segmentation masks and their corresponding viewpoint, the space carving algorithm, first introduced by Kutulakos et al. more than 20 years ago, is able to reconstruct a good estimate of the ground truth shape, called visual hull (paper<sup id="fnref:50" role="doc-noteref"><a href="#fn:50" class="footnote" rel="footnote">12</a></sup>, intuitive video<sup id="fnref:51" role="doc-noteref"><a href="#fn:51" class="footnote" rel="footnote">13</a></sup>). Front and back normal maps can be calculated from the visual hull. They will later be referred to by the notation $\tilde{N^1}$, $\tilde{N^2}$, or by the term visual hull initialized normals. These normals already provide a good estimate for the ground truth normals.</p>
+
+<h2 id="normal-prediction">
+<a class="anchor" href="#normal-prediction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Normal prediction</h2>
+
+<h3 id="differentiable-rendering-layer">
+<a class="anchor" href="#differentiable-rendering-layer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Differentiable rendering layer</h3>
+<p>The model utilizes differentiable rendering to produce high-quality images of transparent objects from a given viewpoint. The renderer is physics-based and uses the Fresnel equations and Snell’s law to calculate complex light paths. Differentiable rendering is an exciting, new field that emerged in the last years as it allows for backpropagation through the rendering layer. This video <sup id="fnref:52" role="doc-noteref"><a href="#fn:52" class="footnote" rel="footnote">14</a></sup> provides a good introductory overview of the topic.
+To render the image from one viewpoint, the differentiable rendering layer requires the environment map $E$ and the estimated normal maps $N^1$, $N^2$ for this particular viewpoint. It outputs the rendered image, a binary mask indicating points where total internal reflection occurred and the pointwise rendering error with masked out environment. The rendering error map is calculated by comparing the rendered image to the ground truth image, cf. Fig. 5.</p>
+
+<p><img src="https://i.imgur.com/1HxaGOX.png" alt="">
+<img src="https://i.imgur.com/gFGKWKM.png" alt="">
+<img src="https://i.imgur.com/Hb7HPv2.png" alt=""></p>
+<h6 id="fig-5-rendered-image-total-internal-reflection-mask-and-rendering-error-for-a-transparent-object">
+<a class="anchor" href="#fig-5-rendered-image-total-internal-reflection-mask-and-rendering-error-for-a-transparent-object" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fig. 5: Rendered image, total internal reflection mask and rendering error for a transparent object</h6>
+
+<h3 id="cost-volume">
+<a class="anchor" href="#cost-volume" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cost volume</h3>
+<p>The search space to find the correct normal maps $N^1$, $N^2$ is enormous. Each point in the front and back normal map could have a completely different surface normal. As stated before, the visual hull initialized normal maps are a good estimate for the ground truth normal maps. Therefore, the search space will be restricted to normal maps close to the visual hull initialized normals. To further reduce the search space, $K$ normal maps for the front and back surface are randomly sampled around the visual hull initialized normal maps. $K$ normal maps for both $N^1$ and $N^2$ lead to $K \times K$ combinations. According to the authors, $K=4$ gives good results. Higher values for $K$ only increase the computational complexity without improving the quality of the normal estimations. The entire cost volume consists of the front and back normals, the rendering error and the total internal reflection mask, cf. Fig. 6.</p>
+
+<p><img src="https://i.imgur.com/TQfjvxk.png" alt=""></p>
+<h6 id="fig-6-the-cost-volume">
+<a class="anchor" href="#fig-6-the-cost-volume" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fig. 6: The cost volume</h6>
+
+<h3 id="normal-prediction-network">
+<a class="anchor" href="#normal-prediction-network" aria-hidden="true"><span class="octicon octicon-link"></span></a>Normal prediction network</h3>
+<p>To estimate the surface normals an encoder-decoder CNN is used. The cost volume is still too large to be fed into the network. Therefore, the authors first use learnable pooling to perform feature extraction on the cost volume. They concatenate the condensed cost volume together with</p>
+<ul>
+  <li>the image of the transparent object</li>
+  <li>the image with masked out environment</li>
+  <li>the visual hull initialized normals</li>
+  <li>the total internal reflection mask</li>
+  <li>the rendering error</li>
+</ul>
+
+<p>and feed everything to the encoder-decoder CNN. $L_N=\vert N^1 - \hat{N^1}\vert ^2 + \vert N^2 - \hat{N^2}\vert^2$ is used as the loss function. It is simply the $L^2$ distance between the estimated normals ($N^1, N^2$) and the ground truth normals ($\hat{N^1}, \hat{N^2}$).</p>
+
+<h2 id="point-cloud-reconstruction">
+<a class="anchor" href="#point-cloud-reconstruction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Point cloud reconstruction</h2>
+<p>The normal prediction network gives important information about the transparent object from different viewing angles. But somehow the features in the different views have to be matched with the points in the point cloud. Subsequently, a modified PointNet++ [^54]  will predict the final point locations and final normal vectors for each point in the point cloud. Finally, the 3D point cloud will be transformed into a mesh by applying Poisson surface reconstruction <sup id="fnref:53" role="doc-noteref"><a href="#fn:53" class="footnote" rel="footnote">15</a></sup>.</p>
+
+<h3 id="feature-mapping">
+<a class="anchor" href="#feature-mapping" aria-hidden="true"><span class="octicon octicon-link"></span></a>Feature mapping</h3>
+<p>The goal of feature mapping is to assign features to each point in the initial point cloud. In particular, these features are the normal at that point, the rendering error and the total internal reflection mask. The features are known for each viewpoint but not for the points in the point cloud. A point of the point cloud can be mapped from 3D-space to the 2D point of each viewpoint to retrieve the necessary information. In some cases, a point might not be visible from a particular angle, if so, it will not be taken into account during feature mapping. For each point, there are usually 10 different views and sets of features. It now has to be decided, which view(s) to take into account when creating the feature vectors. The authors try three different feature mapping approaches, see section 3.2 Feature Mapping <sup id="fnref:1:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> for more details. Selecting the view with the lowest rendering error leads to the best results.</p>
+
+<h3 id="modified-pointnet">
+<a class="anchor" href="#modified-pointnet" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modified PointNet++</h3>
+<p>Given the mapped features and the initial point cloud, PointNet++ predicts the final point cloud and the corresponding normals. The authors were able to improve the predictions by modifying the PointNet++ architecture. In particular, they replaced max-pooling with average pooling, passed the front and back normals to all skip connections and applied feature augmentation. The best results are obtained with a chamfer-distance-based loss. The chamfer distance can be used to measure the distance between 2 point clouds. The authors try two other loss functions. For details see Table 2 of the paper <sup id="fnref:1:2" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
+
+<h3 id="poisson-surface-reconstruction">
+<a class="anchor" href="#poisson-surface-reconstruction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Poisson surface reconstruction</h3>
+<p>Poisson surface reconstruction was first introduced in 2006 <sup id="fnref:53:1" role="doc-noteref"><a href="#fn:53" class="footnote" rel="footnote">15</a></sup> and is still used in recent papers. It takes a point cloud and surface normal estimations for each point of the point cloud and reconstructs the 3D mesh of the object.</p>
+
+<h1 id="evaluation">
+<a class="anchor" href="#evaluation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Evaluation</h1>
+<h2 id="qualitative-results">
+<a class="anchor" href="#qualitative-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Qualitative results</h2>
+
+<p><img src="https://i.imgur.com/ELmYXsF.gif" alt=""></p>
+<h6 id="fig-7-qualitative-results-of-li-et-al">
+<a class="anchor" href="#fig-7-qualitative-results-of-li-et-al" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fig. 7: Qualitative results of Li et al.</h6>
+<p>At first sight, the quality of the reconstructions looks really good. The
+scenes look reasonable and no big differences between ground truth and reconstructions are visible.</p>
+
+<h2 id="testing-on-real-world-data">
+<a class="anchor" href="#testing-on-real-world-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing on real-world data</h2>
+<p>To test the model on real-world data the following is needed:</p>
+<ul>
+  <li>images of the transparent object,</li>
+  <li>silhouette segmentation masks of all images,</li>
+  <li>environment map.</li>
+</ul>
+
+<p>The authors claim that real-world testing can be done by “light-weight mobile phone-based acquisition” <sup id="fnref:70" role="doc-noteref"><a href="#fn:70" class="footnote" rel="footnote">16</a></sup>. The images of the object can indeed be captured with commodity hardware like a smartphone camera. COLMAP<sup id="fnref:61" role="doc-noteref"><a href="#fn:61" class="footnote" rel="footnote">17</a></sup> is used to determine the viewpoint of the images. However, the segmentation masks were created by the authors manually, and to capture the environment map, a mirror sphere has to be placed at the position of the transparent object.</p>
+
+<h2 id="comparison-to-latest-sota">
+<a class="anchor" href="#comparison-to-latest-sota" aria-hidden="true"><span class="octicon octicon-link"></span></a>Comparison to latest SOTA</h2>
+<p>Quick reminder: this is deep learning research. It comes as no big surprise, that there is a newer paper <sup id="fnref:60" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup>, with a different approach, that works better. This newer paper is by Lyu et al. and it’s the successor of <sup id="fnref:31:2" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup>. Figure 5 shows the qualitative results of Li et al.<sup id="fnref:1:3" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> compared to Lyu et al. The left side presents the results of Lyu et al. (1st column) compared with their ground truth (2nd column). On the right side, the results of Li et al. are displayed (ground truth: 3rd column, reconstruction: 4th column).</p>
+
+<p><img src="https://i.imgur.com/FA2KbQJ.png" alt="">
+<img src="https://i.imgur.com/K4vB6kA.png" alt=""></p>
+<h6 id="fig-8-qualitative-comparison-between-li-et-al-and-lyu-et-al-">
+<a class="anchor" href="#fig-8-qualitative-comparison-between-li-et-al-and-lyu-et-al-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fig. 8: Qualitative comparison between Li et al.<sup id="fnref:1:4" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al. <sup id="fnref:60:1" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup>
+</h6>
+
+<p>It is clearly visible that the results of Li et al.<sup id="fnref:1:5" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> are oversmoothed. There is no space between the hand and the head of the monkey. Additionally, neither the eyes of the dog nor the monkey are visible in the reconstructions. Lyu et al.<sup id="fnref:60:2" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> on the other side successfully reconstructs the eyes of both animals and clearly separates the hand from the head of the monkey. One possible reason for this oversmoothing is the average pooling in the modified PointNet++. It has to be taken into account, however, that the underlying ground truth in both papers is slightly different and that Li et al.<sup id="fnref:1:6" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> optimized for easy acquisition of the shape. Lyu et al.<sup id="fnref:60:3" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> improved their acquisition ease compare to <sup id="fnref:31:3" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup> but is still more restricted than Li et al.<sup id="fnref:1:7" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. A quantitative comparison between both papers can be found in Table 1. It displays the reconstruction error in the form of the average per-vertex distance to the corresponding ground truth. Lyu et al. was able to cut the per-vertex distance approximately in half for all tested shapes.</p>
+
+<h6 id="table-1-reconstruction-error-of-li-et-al-and-lyu-et-al-based-on-table-1-of-">
+<a class="anchor" href="#table-1-reconstruction-error-of-li-et-al-and-lyu-et-al-based-on-table-1-of-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table 1: Reconstruction error of Li et al.<sup id="fnref:1:8" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al.<sup id="fnref:60:4" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> (based on Table 1 of <sup id="fnref:60:5" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup>)</h6>
+<p>|       | initial | Li et al. 2020<sup id="fnref:1:9" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> | Lyu et al. 2020<sup id="fnref:60:6" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> |
+|—— | ——- | —————— | ——————– |
+| Mouse | 0.007164| 0.005840           | <b>0.003075          |
+| Dog   | 0.004481| 0.002778           | <b>0.002065          |
+| Monkey| 0.005048| 0.004632           | <b>0.002244          |
+| Pig   | 0.004980| 0.004741           | <b>0.002696          |</b></b></b></b></p>
+
+<h1 id="conclusion">
+<a class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h1>
+
+<p>This paper proposed a novel approach that combined different paths and provides good results, but the reconstruction is not as effortless as claimed.</p>
+
+<p>For the sake of simplicity, some relevant details were left out. In case of questions, read the paper <sup id="fnref:1:10" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and the code <sup id="fnref:2:1" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">11</a></sup> or <a href="mailto:christian.wallenwein@tum.de">send me an email</a>. Thank you to Yu-Ying Yeh for clarifying questions about the paper, Eckhard Siegmann for suggestions and proofreading and Pengyuan for tips and advice.</p>
+
+<h1 id="references">
+<a class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h1>
+
+<p><a href="%22https://github.com/lzqsd/TransparentShapeDataset">“https://github.com/lzqsd/TransparentShapeDataset</a></p>
+
+<p>[^54] Qi, Charles R., et al. “Pointnet++: Deep hierarchical feature learning on point sets in a metric space.” arXiv preprint arXiv:1706.02413 (2017).</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>Li, Zhengqin, Yu-Ying Yeh, and Manmohan Chandraker. “Through the looking glass: neural 3D reconstruction of transparent shapes.” Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2020. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">↩</a> <a href="#fnref:1:1" class="reversefootnote" role="doc-backlink">↩<sup>2</sup></a> <a href="#fnref:1:2" class="reversefootnote" role="doc-backlink">↩<sup>3</sup></a> <a href="#fnref:1:3" class="reversefootnote" role="doc-backlink">↩<sup>4</sup></a> <a href="#fnref:1:4" class="reversefootnote" role="doc-backlink">↩<sup>5</sup></a> <a href="#fnref:1:5" class="reversefootnote" role="doc-backlink">↩<sup>6</sup></a> <a href="#fnref:1:6" class="reversefootnote" role="doc-backlink">↩<sup>7</sup></a> <a href="#fnref:1:7" class="reversefootnote" role="doc-backlink">↩<sup>8</sup></a> <a href="#fnref:1:8" class="reversefootnote" role="doc-backlink">↩<sup>9</sup></a> <a href="#fnref:1:9" class="reversefootnote" role="doc-backlink">↩<sup>10</sup></a> <a href="#fnref:1:10" class="reversefootnote" role="doc-backlink">↩<sup>11</sup></a></p>
+    </li>
+    <li id="fn:34" role="doc-endnote">
+      <p>Murase, Hiroshi. “Surface shape reconstruction of an undulating transparent object.” Proceedings Third International Conference on Computer Vision, 1990 <a href="#fnref:34" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:30" role="doc-endnote">
+      <p>Qian, Yiming, Minglun Gong, and Yee-Hong Yang. “Stereo-based 3D reconstruction of dynamic fluid surfaces by global optimization.” Proceedings of the IEEE conference on computer vision and pattern recognition. 2017. <a href="#fnref:30" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:31" role="doc-endnote">
+      <p>Wu, Bojian, et al. “Full 3D reconstruction of transparent objects.” arXiv preprint arXiv:1805.03482 (2018). <a href="#fnref:31" class="reversefootnote" role="doc-backlink">↩</a> <a href="#fnref:31:1" class="reversefootnote" role="doc-backlink">↩<sup>2</sup></a> <a href="#fnref:31:2" class="reversefootnote" role="doc-backlink">↩<sup>3</sup></a> <a href="#fnref:31:3" class="reversefootnote" role="doc-backlink">↩<sup>4</sup></a></p>
+    </li>
+    <li id="fn:32" role="doc-endnote">
+      <p>Stets, Jonathan, et al. “Single-shot analysis of refractive shape using convolutional neural networks.” 2019 IEEE Winter Conference on Applications of Computer Vision (WACV). IEEE, 2019. <a href="#fnref:32" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:33" role="doc-endnote">
+      <p>Sajjan, Shreeyak, et al. “Clear grasp: 3d shape estimation of transparent objects for manipulation.” 2020 IEEE International Conference on Robotics and Automation (ICRA). IEEE, 2020. <a href="#fnref:33" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:41" role="doc-endnote">
+      <p>The University of British Columbia, Department of Mathematics “The Law of Refraction”, accessed 16. July 2021, <a href="https://secure.math.ubc.ca/~cass/courses/m309-01a/chu/Fundamentals/snell.htm">https://secure.math.ubc.ca/~cass/courses/m309-01a/chu/Fundamentals/snell.htm</a> <a href="#fnref:41" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:40" role="doc-endnote">
+      <p>The University of British Columbia, Department of Mathematics “The Law of Reflection”, accessed 16. July 2021, <a href="https://secure.math.ubc.ca/~cass/courses/m309-01a/chu/Fundamentals/reflection.htm">https://secure.math.ubc.ca/~cass/courses/m309-01a/chu/Fundamentals/reflection.htm</a> <a href="#fnref:40" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:42" role="doc-endnote">
+      <p>Wikipedia “Fresnel equations”, accessed 16. July 2021, <a href="https://en.wikipedia.org/wiki/Fresnel_equations">https://en.wikipedia.org/wiki/Fresnel_equations</a> <a href="#fnref:42" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>“Transparent Shape Dataset”, 2020, uploaded by Zhengqin Li, <a href="#fnref:3" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>“Transparent Shape Dataset”, 2020, uploaded by Zhengqin Li, https://github.com/lzqsd/TransparentShapeReconstruction <a href="#fnref:2" class="reversefootnote" role="doc-backlink">↩</a> <a href="#fnref:2:1" class="reversefootnote" role="doc-backlink">↩<sup>2</sup></a></p>
+    </li>
+    <li id="fn:50" role="doc-endnote">
+      <p>Kutulakos, Kiriakos N., and Steven M. Seitz. “A theory of shape by space carving.” International journal of computer vision 38.3 (2000): 199-218. <a href="#fnref:50" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:51" role="doc-endnote">
+      <p>Computerphile “Space Carving - Computerphile”, 2016, <a href="https://www.youtube.com/watch?v=cGs90KF4oTc&amp;t=73s">https://www.youtube.com/watch?v=cGs90KF4oTc&amp;t=73s</a> <a href="#fnref:51" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:52" role="doc-endnote">
+      <p>UofT CSC 2547 3D &amp; Geometric Deep Learning “CSC2547 Differentiable Rendering A Survey”, 2021, <a href="https://www.youtube.com/watch?v=7LU0KcnSTc4">https://www.youtube.com/watch?v=7LU0KcnSTc4</a> <a href="#fnref:52" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:53" role="doc-endnote">
+      <p>Kazhdan, Michael, Matthew Bolitho, and Hugues Hoppe. “Poisson surface reconstruction.” Proceedings of the fourth Eurographics symposium on Geometry processing. Vol. 7. 2006. <a href="#fnref:53" class="reversefootnote" role="doc-backlink">↩</a> <a href="#fnref:53:1" class="reversefootnote" role="doc-backlink">↩<sup>2</sup></a></p>
+    </li>
+    <li id="fn:70" role="doc-endnote">
+      <p>ComputerVisionFoundation Videos “Through the Looking Glass: Neural 3D Reconstruction of Transparent Shapes”, 2020, <a href="https://www.youtube.com/watch?v=zVu1v4rasAE&amp;t=53s">https://www.youtube.com/watch?v=zVu1v4rasAE&amp;t=53s</a> <a href="#fnref:70" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:61" role="doc-endnote">
+      <p>Schonberger, Johannes L., and Jan-Michael Frahm. “Structure-from-motion revisited.” Proceedings of the IEEE conference on computer vision and pattern recognition. 2016. <a href="#fnref:61" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:60" role="doc-endnote">
+      <p>Lyu, Jiahui, et al. “Differentiable refraction-tracing for mesh reconstruction of transparent objects.” ACM Transactions on Graphics (TOG) 39.6 (2020): 1-13. <a href="#fnref:60" class="reversefootnote" role="doc-backlink">↩</a> <a href="#fnref:60:1" class="reversefootnote" role="doc-backlink">↩<sup>2</sup></a> <a href="#fnref:60:2" class="reversefootnote" role="doc-backlink">↩<sup>3</sup></a> <a href="#fnref:60:3" class="reversefootnote" role="doc-backlink">↩<sup>4</sup></a> <a href="#fnref:60:4" class="reversefootnote" role="doc-backlink">↩<sup>5</sup></a> <a href="#fnref:60:5" class="reversefootnote" role="doc-backlink">↩<sup>6</sup></a> <a href="#fnref:60:6" class="reversefootnote" role="doc-backlink">↩<sup>7</sup></a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><a class="u-url" href="/computer%20vision/2021/07/16/Neural-3D-Reconstruction-of-Transparent-Shapes.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" target="_blank" title="fastai"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" target="_blank" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
