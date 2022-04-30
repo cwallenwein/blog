@@ -172,10 +172,11 @@ For the sake of simplicity, some relevant details were left out. In case of ques
 
 [^1]: Li, Zhengqin, Yu-Ying Yeh, and Manmohan Chandraker. "Through the looking glass: neural 3D reconstruction of transparent shapes." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2020.
 
-[^2]: "Transparent Shape Dataset", 2020, uploaded by Zhengqin Li, https://github.com/lzqsd/TransparentShapeReconstruction
+[^2]: Transparent Shape paper repository, 2020, uploaded by Zhengqin Li, [https://github.com/lzqsd/TransparentShapeReconstruction](https://github.com/lzqsd/TransparentShapeReconstruction)
 
-[^3]: "Transparent Shape Dataset", 2020, uploaded by Zhengqin Li,
-[https://github.com/lzqsd/TransparentShapeDataset]("https://github.com/lzqsd/TransparentShapeDataset)
+
+[^3]: Transparent Shape dataset repository, 2020, uploaded by Zhengqin Li,
+[https://github.com/lzqsd/TransparentShapeDataset](https://github.com/lzqsd/TransparentShapeDataset)
 
 [comment]: <> (2. Introduction)
 
@@ -209,7 +210,7 @@ For the sake of simplicity, some relevant details were left out. In case of ques
 
 [^53]: Kazhdan, Michael, Matthew Bolitho, and Hugues Hoppe. "Poisson surface reconstruction." Proceedings of the fourth Eurographics symposium on Geometry processing. Vol. 7. 2006.
 
-[^54] Qi, Charles R., et al. "Pointnet++: Deep hierarchical feature learning on point sets in a metric space." arXiv preprint arXiv:1706.02413 (2017).
+[^54]: Qi, Charles R., et al. "Pointnet++: Deep hierarchical feature learning on point sets in a metric space." arXiv preprint arXiv:1706.02413 (2017).
 
 [comment]: <> (6. Evaluation)
 
