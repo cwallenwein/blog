@@ -148,12 +148,13 @@ Quick reminder: this is deep learning research. It comes as no big surprise, tha
 It is clearly visible that the results of Li et al.[^1] are oversmoothed. There is no space between the hand and the head of the monkey. Additionally, neither the eyes of the dog nor the monkey are visible in the reconstructions. Lyu et al.[^60] on the other side successfully reconstructs the eyes of both animals and clearly separates the hand from the head of the monkey. One possible reason for this oversmoothing is the average pooling in the modified PointNet++. It has to be taken into account, however, that the underlying ground truth in both papers is slightly different and that Li et al.[^1] optimized for easy acquisition of the shape. Lyu et al.[^60] improved their acquisition ease compare to [^31] but is still more restricted than Li et al.[^1]. A quantitative comparison between both papers can be found in Table 1. It displays the reconstruction error in the form of the average per-vertex distance to the corresponding ground truth. Lyu et al. was able to cut the per-vertex distance approximately in half for all tested shapes.
 
 ###### Table 1: Reconstruction error of Li et al.[^1] and Lyu et al.[^60] (based on Table 1 of [^60])
-|       | initial | Li et al. 2020[^1] | Lyu et al. 2020[^60] |
-|------ | -------- | ----------------- | -------------------- |
-| Mouse | 0.007164 | 0.005840          | **0.003075**         |
-| Dog   | 0.004481 | 0.002778          | **0.002065**         |
-| Monkey| 0.005048 | 0.004632          | **0.002244**         |
-| Pig   | 0.004980 | 0.004741          | **0.002696**         |
+
+|   -   | initial | Li et al. 2020[^1] | Lyu et al. 2020[^60] |
+|-|-|-|-|
+| Mouse | 0.007164 | 0.005840 | **0.003075** |
+| Dog | 0.004481 | 0.002778 | **0.002065** |
+| Monkey | 0.005048 | 0.004632 | **0.002244** |
+| Pig | 0.004980 | 0.004741 | **0.002696** |
 
 
 
