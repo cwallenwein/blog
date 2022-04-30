@@ -149,11 +149,11 @@ It is clearly visible that the results of Li et al.[^1] are oversmoothed. There 
 
 ###### Table 1: Reconstruction error of Li et al.[^1] and Lyu et al.[^60] (based on Table 1 of [^60])
 |       | initial | Li et al. 2020[^1] | Lyu et al. 2020[^60] |
-|------ | ------- | ------------------ | -------------------- |
-| Mouse | 0.007164| 0.005840           | <b>0.003075          |
-| Dog   | 0.004481| 0.002778           | <b>0.002065          |
-| Monkey| 0.005048| 0.004632           | <b>0.002244          |
-| Pig   | 0.004980| 0.004741           | <b>0.002696          |
+|------ | -------- | ----------------- | -------------------- |
+| Mouse | 0.007164 | 0.005840          | **0.003075**         |
+| Dog   | 0.004481 | 0.002778          | **0.002065**         |
+| Monkey| 0.005048 | 0.004632          | **0.002244**         |
+| Pig   | 0.004980 | 0.004741          | **0.002696**         |
 
 
 
@@ -174,7 +174,7 @@ For the sake of simplicity, some relevant details were left out. In case of ques
 [^2]: "Transparent Shape Dataset", 2020, uploaded by Zhengqin Li, https://github.com/lzqsd/TransparentShapeReconstruction
 
 [^3]: "Transparent Shape Dataset", 2020, uploaded by Zhengqin Li,
-["https://github.com/lzqsd/TransparentShapeDataset]("https://github.com/lzqsd/TransparentShapeDataset)
+[https://github.com/lzqsd/TransparentShapeDataset]("https://github.com/lzqsd/TransparentShapeDataset)
 
 [comment]: <> (2. Introduction)
 
