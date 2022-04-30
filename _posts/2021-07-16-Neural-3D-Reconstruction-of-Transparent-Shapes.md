@@ -150,7 +150,7 @@ It is clearly visible that the results of Li et al.[^1] are oversmoothed. There 
 ###### Table 1: Reconstruction error of Li et al.[^1] and Lyu et al.[^60] (based on Table 1 of [^60])
 
 | | initial | Li et al. 2020[^1] | Lyu et al. 2020[^60] |
-|:-:|:-:|:-:|:-:|
+|:-|:-:|:-:|:-:|
 | Mouse | 0.007164 | 0.005840 | **0.003075** |
 | Dog | 0.004481 | 0.002778 | **0.002065** |
 | Monkey | 0.005048 | 0.004632 | **0.002244** |
