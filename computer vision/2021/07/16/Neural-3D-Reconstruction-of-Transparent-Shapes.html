@@ -205,7 +205,7 @@ To render the image from one viewpoint, the differentiable rendering layer requi
 <p>and feed everything to the encoder-decoder CNN. $L_N=\vert N^1 - \hat{N^1}\vert ^2 + \vert N^2 - \hat{N^2}\vert^2$ is used as the loss function. It is simply the $L^2$ distance between the estimated normals ($N^1, N^2$) and the ground truth normals ($\hat{N^1}, \hat{N^2}$).</p>
 
 <h2 id="point-cloud-reconstruction">Point cloud reconstruction</h2>
-<p>The normal prediction network gives important information about the transparent object from different viewing angles. But somehow the features in the different views have to be matched with the points in the point cloud. Subsequently, a modified PointNet++ [^54]  will predict the final point locations and final normal vectors for each point in the point cloud. Finally, the 3D point cloud will be transformed into a mesh by applying Poisson surface reconstruction <sup id="fnref:53" role="doc-noteref"><a href="#fn:53" class="footnote" rel="footnote">15</a></sup>.</p>
+<p>The normal prediction network gives important information about the transparent object from different viewing angles. But somehow the features in the different views have to be matched with the points in the point cloud. Subsequently, a modified PointNet++ <sup id="fnref:54" role="doc-noteref"><a href="#fn:54" class="footnote" rel="footnote">15</a></sup>  will predict the final point locations and final normal vectors for each point in the point cloud. Finally, the 3D point cloud will be transformed into a mesh by applying Poisson surface reconstruction <sup id="fnref:53" role="doc-noteref"><a href="#fn:53" class="footnote" rel="footnote">16</a></sup>.</p>
 
 <h3 id="feature-mapping">Feature mapping</h3>
 <p>The goal of feature mapping is to assign features to each point in the initial point cloud. In particular, these features are the normal at that point, the rendering error and the total internal reflection mask. The features are known for each viewpoint but not for the points in the point cloud. A point of the point cloud can be mapped from 3D-space to the 2D point of each viewpoint to retrieve the necessary information. In some cases, a point might not be visible from a particular angle, if so, it will not be taken into account during feature mapping. For each point, there are usually 10 different views and sets of features. It now has to be decided, which view(s) to take into account when creating the feature vectors. The authors try three different feature mapping approaches, see section 3.2 Feature Mapping <sup id="fnref:1:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> for more details. Selecting the view with the lowest rendering error leads to the best results.</p>
@@ -214,7 +214,7 @@ To render the image from one viewpoint, the differentiable rendering layer requi
 <p>Given the mapped features and the initial point cloud, PointNet++ predicts the final point cloud and the corresponding normals. The authors were able to improve the predictions by modifying the PointNet++ architecture. In particular, they replaced max-pooling with average pooling, passed the front and back normals to all skip connections and applied feature augmentation. The best results are obtained with a chamfer-distance-based loss. The chamfer distance can be used to measure the distance between 2 point clouds. The authors try two other loss functions. For details see Table 2 of the paper <sup id="fnref:1:2" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
 
 <h3 id="poisson-surface-reconstruction">Poisson surface reconstruction</h3>
-<p>Poisson surface reconstruction was first introduced in 2006 <sup id="fnref:53:1" role="doc-noteref"><a href="#fn:53" class="footnote" rel="footnote">15</a></sup> and is still used in recent papers. It takes a point cloud and surface normal estimations for each point of the point cloud and reconstructs the 3D mesh of the object.</p>
+<p>Poisson surface reconstruction was first introduced in 2006 <sup id="fnref:53:1" role="doc-noteref"><a href="#fn:53" class="footnote" rel="footnote">16</a></sup> and is still used in recent papers. It takes a point cloud and surface normal estimations for each point of the point cloud and reconstructs the 3D mesh of the object.</p>
 
 <h1 id="evaluation">Evaluation</h1>
 <h2 id="qualitative-results">Qualitative results</h2>
@@ -232,18 +232,18 @@ scenes look reasonable and no big differences between ground truth and reconstru
   <li>environment map.</li>
 </ul>
 
-<p>The authors claim that real-world testing can be done by “light-weight mobile phone-based acquisition” <sup id="fnref:70" role="doc-noteref"><a href="#fn:70" class="footnote" rel="footnote">16</a></sup>. The images of the object can indeed be captured with commodity hardware like a smartphone camera. COLMAP<sup id="fnref:61" role="doc-noteref"><a href="#fn:61" class="footnote" rel="footnote">17</a></sup> is used to determine the viewpoint of the images. However, the segmentation masks were created by the authors manually, and to capture the environment map, a mirror sphere has to be placed at the position of the transparent object.</p>
+<p>The authors claim that real-world testing can be done by “light-weight mobile phone-based acquisition” <sup id="fnref:70" role="doc-noteref"><a href="#fn:70" class="footnote" rel="footnote">17</a></sup>. The images of the object can indeed be captured with commodity hardware like a smartphone camera. COLMAP<sup id="fnref:61" role="doc-noteref"><a href="#fn:61" class="footnote" rel="footnote">18</a></sup> is used to determine the viewpoint of the images. However, the segmentation masks were created by the authors manually, and to capture the environment map, a mirror sphere has to be placed at the position of the transparent object.</p>
 
 <h2 id="comparison-to-latest-sota">Comparison to latest SOTA</h2>
-<p>Quick reminder: this is deep learning research. It comes as no big surprise, that there is a newer paper <sup id="fnref:60" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup>, with a different approach, that works better. This newer paper is by Lyu et al. and it’s the successor of <sup id="fnref:31:2" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup>. Figure 5 shows the qualitative results of Li et al.<sup id="fnref:1:3" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> compared to Lyu et al. The left side presents the results of Lyu et al. (1st column) compared with their ground truth (2nd column). On the right side, the results of Li et al. are displayed (ground truth: 3rd column, reconstruction: 4th column).</p>
+<p>Quick reminder: this is deep learning research. It comes as no big surprise, that there is a newer paper <sup id="fnref:60" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup>, with a different approach, that works better. This newer paper is by Lyu et al. and it’s the successor of <sup id="fnref:31:2" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup>. Figure 5 shows the qualitative results of Li et al.<sup id="fnref:1:3" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> compared to Lyu et al. The left side presents the results of Lyu et al. (1st column) compared with their ground truth (2nd column). On the right side, the results of Li et al. are displayed (ground truth: 3rd column, reconstruction: 4th column).</p>
 
 <p><img src="https://i.imgur.com/FA2KbQJ.png" alt="" />
 <img src="https://i.imgur.com/K4vB6kA.png" alt="" /></p>
-<h6 id="fig-8-qualitative-comparison-between-li-et-al-and-lyu-et-al-">Fig. 8: Qualitative comparison between Li et al.<sup id="fnref:1:4" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al. <sup id="fnref:60:1" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup></h6>
+<h6 id="fig-8-qualitative-comparison-between-li-et-al-and-lyu-et-al-">Fig. 8: Qualitative comparison between Li et al.<sup id="fnref:1:4" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al. <sup id="fnref:60:1" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup></h6>
 
-<p>It is clearly visible that the results of Li et al.<sup id="fnref:1:5" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> are oversmoothed. There is no space between the hand and the head of the monkey. Additionally, neither the eyes of the dog nor the monkey are visible in the reconstructions. Lyu et al.<sup id="fnref:60:2" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> on the other side successfully reconstructs the eyes of both animals and clearly separates the hand from the head of the monkey. One possible reason for this oversmoothing is the average pooling in the modified PointNet++. It has to be taken into account, however, that the underlying ground truth in both papers is slightly different and that Li et al.<sup id="fnref:1:6" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> optimized for easy acquisition of the shape. Lyu et al.<sup id="fnref:60:3" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> improved their acquisition ease compare to <sup id="fnref:31:3" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup> but is still more restricted than Li et al.<sup id="fnref:1:7" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. A quantitative comparison between both papers can be found in Table 1. It displays the reconstruction error in the form of the average per-vertex distance to the corresponding ground truth. Lyu et al. was able to cut the per-vertex distance approximately in half for all tested shapes.</p>
+<p>It is clearly visible that the results of Li et al.<sup id="fnref:1:5" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> are oversmoothed. There is no space between the hand and the head of the monkey. Additionally, neither the eyes of the dog nor the monkey are visible in the reconstructions. Lyu et al.<sup id="fnref:60:2" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> on the other side successfully reconstructs the eyes of both animals and clearly separates the hand from the head of the monkey. One possible reason for this oversmoothing is the average pooling in the modified PointNet++. It has to be taken into account, however, that the underlying ground truth in both papers is slightly different and that Li et al.<sup id="fnref:1:6" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> optimized for easy acquisition of the shape. Lyu et al.<sup id="fnref:60:3" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> improved their acquisition ease compare to <sup id="fnref:31:3" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup> but is still more restricted than Li et al.<sup id="fnref:1:7" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. A quantitative comparison between both papers can be found in Table 1. It displays the reconstruction error in the form of the average per-vertex distance to the corresponding ground truth. Lyu et al. was able to cut the per-vertex distance approximately in half for all tested shapes.</p>
 
-<h6 id="table-1-reconstruction-error-of-li-et-al-and-lyu-et-al-based-on-table-1-of-">Table 1: Reconstruction error of Li et al.<sup id="fnref:1:8" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al.<sup id="fnref:60:4" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> (based on Table 1 of <sup id="fnref:60:5" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup>)</h6>
+<h6 id="table-1-reconstruction-error-of-li-et-al-and-lyu-et-al-based-on-table-1-of-">Table 1: Reconstruction error of Li et al.<sup id="fnref:1:8" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al.<sup id="fnref:60:4" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> (based on Table 1 of <sup id="fnref:60:5" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup>)</h6>
 
 <table>
   <thead>
@@ -251,7 +251,7 @@ scenes look reasonable and no big differences between ground truth and reconstru
       <th style="text-align: center"> </th>
       <th style="text-align: center">initial</th>
       <th style="text-align: center">Li et al. 2020<sup id="fnref:1:9" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></th>
-      <th style="text-align: center">Lyu et al. 2020<sup id="fnref:60:6" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup></th>
+      <th style="text-align: center">Lyu et al. 2020<sup id="fnref:60:6" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup></th>
     </tr>
   </thead>
   <tbody>
@@ -290,9 +290,7 @@ scenes look reasonable and no big differences between ground truth and reconstru
 
 <h1 id="references">References</h1>
 
-<p><a href="&quot;https://github.com/lzqsd/TransparentShapeDataset">https://github.com/lzqsd/TransparentShapeDataset</a></p>
-
-<p>[^54] Qi, Charles R., et al. “Pointnet++: Deep hierarchical feature learning on point sets in a metric space.” arXiv preprint arXiv:1706.02413 (2017).</p>
+<p><a href="https://github.com/lzqsd/TransparentShapeDataset">https://github.com/lzqsd/TransparentShapeDataset</a></p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
@@ -324,10 +322,10 @@ scenes look reasonable and no big differences between ground truth and reconstru
       <p>Wikipedia “Fresnel equations”, accessed 16. July 2021, <a href="https://en.wikipedia.org/wiki/Fresnel_equations">https://en.wikipedia.org/wiki/Fresnel_equations</a> <a href="#fnref:42" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:3" role="doc-endnote">
-      <p>“Transparent Shape Dataset”, 2020, uploaded by Zhengqin Li, <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+      <p>Transparent Shape dataset repository, 2020, uploaded by Zhengqin Li, <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:2" role="doc-endnote">
-      <p>“Transparent Shape Dataset”, 2020, uploaded by Zhengqin Li, https://github.com/lzqsd/TransparentShapeReconstruction <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:2:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
+      <p>Transparent Shape paper repository, 2020, uploaded by Zhengqin Li, <a href="https://github.com/lzqsd/TransparentShapeReconstruction">https://github.com/lzqsd/TransparentShapeReconstruction</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:2:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
     </li>
     <li id="fn:50" role="doc-endnote">
       <p>Kutulakos, Kiriakos N., and Steven M. Seitz. “A theory of shape by space carving.” International journal of computer vision 38.3 (2000): 199-218. <a href="#fnref:50" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
@@ -337,6 +335,9 @@ scenes look reasonable and no big differences between ground truth and reconstru
     </li>
     <li id="fn:52" role="doc-endnote">
       <p>UofT CSC 2547 3D &amp; Geometric Deep Learning “CSC2547 Differentiable Rendering A Survey”, 2021, <a href="https://www.youtube.com/watch?v=7LU0KcnSTc4">https://www.youtube.com/watch?v=7LU0KcnSTc4</a> <a href="#fnref:52" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:54" role="doc-endnote">
+      <p>Qi, Charles R., et al. “Pointnet++: Deep hierarchical feature learning on point sets in a metric space.” arXiv preprint arXiv:1706.02413 (2017). <a href="#fnref:54" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:53" role="doc-endnote">
       <p>Kazhdan, Michael, Matthew Bolitho, and Hugues Hoppe. “Poisson surface reconstruction.” Proceedings of the fourth Eurographics symposium on Geometry processing. Vol. 7. 2006. <a href="#fnref:53" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:53:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
