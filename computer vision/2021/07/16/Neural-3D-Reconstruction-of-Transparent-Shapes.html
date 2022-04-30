@@ -244,12 +244,43 @@ scenes look reasonable and no big differences between ground truth and reconstru
 <p>It is clearly visible that the results of Li et al.<sup id="fnref:1:5" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> are oversmoothed. There is no space between the hand and the head of the monkey. Additionally, neither the eyes of the dog nor the monkey are visible in the reconstructions. Lyu et al.<sup id="fnref:60:2" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> on the other side successfully reconstructs the eyes of both animals and clearly separates the hand from the head of the monkey. One possible reason for this oversmoothing is the average pooling in the modified PointNet++. It has to be taken into account, however, that the underlying ground truth in both papers is slightly different and that Li et al.<sup id="fnref:1:6" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> optimized for easy acquisition of the shape. Lyu et al.<sup id="fnref:60:3" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> improved their acquisition ease compare to <sup id="fnref:31:3" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup> but is still more restricted than Li et al.<sup id="fnref:1:7" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. A quantitative comparison between both papers can be found in Table 1. It displays the reconstruction error in the form of the average per-vertex distance to the corresponding ground truth. Lyu et al. was able to cut the per-vertex distance approximately in half for all tested shapes.</p>
 
 <h6 id="table-1-reconstruction-error-of-li-et-al-and-lyu-et-al-based-on-table-1-of-">Table 1: Reconstruction error of Li et al.<sup id="fnref:1:8" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al.<sup id="fnref:60:4" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> (based on Table 1 of <sup id="fnref:60:5" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup>)</h6>
-<p>|       | initial | Li et al. 2020<sup id="fnref:1:9" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> | Lyu et al. 2020<sup id="fnref:60:6" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup> |
-|—— | ——– | —————– | ——————– |
-| Mouse | 0.007164 | 0.005840          | <strong>0.003075</strong>         |
-| Dog   | 0.004481 | 0.002778          | <strong>0.002065</strong>         |
-| Monkey| 0.005048 | 0.004632          | <strong>0.002244</strong>         |
-| Pig   | 0.004980 | 0.004741          | <strong>0.002696</strong>         |</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>-</th>
+      <th>initial</th>
+      <th>Li et al. 2020<sup id="fnref:1:9" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></th>
+      <th>Lyu et al. 2020<sup id="fnref:60:6" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">18</a></sup></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Mouse</td>
+      <td>0.007164</td>
+      <td>0.005840</td>
+      <td><strong>0.003075</strong></td>
+    </tr>
+    <tr>
+      <td>Dog</td>
+      <td>0.004481</td>
+      <td>0.002778</td>
+      <td><strong>0.002065</strong></td>
+    </tr>
+    <tr>
+      <td>Monkey</td>
+      <td>0.005048</td>
+      <td>0.004632</td>
+      <td><strong>0.002244</strong></td>
+    </tr>
+    <tr>
+      <td>Pig</td>
+      <td>0.004980</td>
+      <td>0.004741</td>
+      <td><strong>0.002696</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 <h1 id="conclusion">Conclusion</h1>
 
