@@ -6,7 +6,6 @@ image: images/post/2021-07-16-Neural-3D-Reconstruction-of-Transparent-Shapes/ban
 layout: post
 toc: false
 ---
-# Through the Looking Glass: Neural 3D Reconstruction of Transparent Shapes
 
 ![](https://i.imgur.com/3F8J1mc.gif)
 ###### Fig. 1: Reconstruction of a transparent object
