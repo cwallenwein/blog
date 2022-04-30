@@ -37,7 +37,7 @@ A normal is a vector that is perpendicular to some object. A surface normal is a
 A normal map encodes the surface normal for each point in an image. The color at a certain point indicates the direction of the surface at this particular point. The color at each point is described by the three color channels $[R,G,B]$. A normal map simply maps the $[X,Y,Z]$-direction of the surface normals to the color channels.
 
 ## Optics fundamentals
-![](https://i.imgur.com/NuoY3Ec.png)
+![](https://i.imgur.com/5yJ0dqn.png)
 ###### Fig. 2: Superposition of reflected and refracted environment images on a window pane.
 
 Light propagates on straight paths through vacuum, air and homogeneous transparent materials. At the interface of two optically different materials, the propagation changes: In most configurations, a single path is split into two paths. For large angles, all light reflects back into the object and no light refracts. This is called total internal reflection. Snell's law of refraction and the Fresnel equations allow calculating precise angles of reflection and refraction and the fraction of reflected and refracted light. In an image acquisition situation, beam splitting creates superimposed images. The higher the index of refraction (IOR, denoted $\text{n}_1$ and $\text{n}_2$ in Fig. 2), the slower the light travels in the optically dense matter, the stronger the surface reflection and the higher the angles of refraction and the shift of the refracted image. More about these concepts can be found at [^41], [^40] and [^42]. 
