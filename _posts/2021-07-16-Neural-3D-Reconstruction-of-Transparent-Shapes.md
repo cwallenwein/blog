@@ -174,8 +174,7 @@ For the sake of simplicity, some relevant details were left out. In case of ques
 [^2]: Transparent Shape paper repository, 2020, uploaded by Zhengqin Li, [https://github.com/lzqsd/TransparentShapeReconstruction](https://github.com/lzqsd/TransparentShapeReconstruction)
 
 
-[^3]: Transparent Shape dataset repository, 2020, uploaded by Zhengqin Li,
-[https://github.com/lzqsd/TransparentShapeDataset](https://github.com/lzqsd/TransparentShapeDataset)
+[^3]: Transparent Shape dataset repository, 2020, uploaded by Zhengqin Li, [https://github.com/lzqsd/TransparentShapeDataset](https://github.com/lzqsd/TransparentShapeDataset)
 
 [comment]: <> (2. Introduction)
 
