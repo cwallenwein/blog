@@ -7,8 +7,7 @@ layout: post
 toc: false
 ---
 
-![](https://i.imgur.com/3F8J1mc.gif)
-###### Fig. 1: Reconstruction of a transparent object
+![](https://i.imgur.com/3F8J1mc.gif "Fig. 1: Reconstruction of a transparent object")
 
 # Introduction
 Obtaining the 3D shape of an object from a set of images is a well-studied problem. The corresponding research field is called Multi-view 3D-reconstruction. Many proposed techniques achieve impressive results but fail to reconstruct transparent objects. Image-based transparent shape reconstruction is an ill-posed problem. Reflection and refraction lead to complex light paths and small changes in shape might lead to completely different appearance. Different solutions to this problem have been proposed, but the acquisition setup is often tedious and requires a complicated setup. In 2020 a group of researchers from the University of California in San Diego state, they have found a technique that enables the reconstruction of transparent objects using only a few unconstrained images taken with a smartphone. This blog post will provide an in-depth look into the paper “Through the Looking Glass: Neural 3D Reconstruction of Transparent Shapes” by Zhengqin Li, Yu-Ying Yeh and Manmohan Chandraker[^1].
