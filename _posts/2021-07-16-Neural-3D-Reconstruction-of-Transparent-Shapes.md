@@ -36,8 +36,7 @@ A normal is a vector that is perpendicular to some object. A surface normal is a
 A normal map encodes the surface normal for each point in an image. The color at a certain point indicates the direction of the surface at this particular point. The color at each point is described by the three color channels $[R,G,B]$. A normal map simply maps the $[X,Y,Z]$-direction of the surface normals to the color channels.
 
 ## Optics fundamentals
-![](https://i.imgur.com/5yJ0dqn.png)
-###### Fig. 2: Superposition of reflected and refracted environment images on a window pane.
+![](https://i.imgur.com/5yJ0dqn.png "Fig. 2: Superposition of reflected and refracted environment images on a window pane")
 
 Light propagates on straight paths through vacuum, air and homogeneous transparent materials. At the interface of two optically different materials, the propagation changes: In most configurations, a single path is split into two paths. For large angles, all light reflects back into the object and no light refracts. This is called total internal reflection. Snell's law of refraction and the Fresnel equations allow calculating precise angles of reflection and refraction and the fraction of reflected and refracted light. In an image acquisition situation, beam splitting creates superimposed images. The higher the index of refraction (IOR, denoted $\text{n}_1$ and $\text{n}_2$ in Fig. 2), the slower the light travels in the optically dense matter, the stronger the surface reflection and the higher the angles of refraction and the shift of the refracted image. More about these concepts can be found at [^41], [^40] and [^42]. 
 
@@ -45,8 +44,7 @@ Light propagates on straight paths through vacuum, air and homogeneous transpare
 
 # Proposed method
 ## Problem setup
-![](https://i.imgur.com/j50ia0g.png)
-###### Fig. 3: Problem setup
+![](https://i.imgur.com/j50ia0g.png "Fig. 3: Problem setup")
 
 The inputs to the model are
 * 5-20 unconstrained images of the transparent object,
@@ -55,8 +53,7 @@ The inputs to the model are
 * the index of refraction of the transparent material.
 
 
-![](https://i.imgur.com/1bG0ran.png)
-###### Fig. 4: Light path visualization with local surface normals $N^1$ and $N^2$
+![](https://i.imgur.com/1bG0ran.png "Fig. 4: Light path visualization with local surface normals $N^1$ and $N^2$")
 
 
 The proposed method limits the light path simulation to a maximum of two bounces. The camera looks onto the transparent object. 
@@ -82,16 +79,14 @@ Given a set of segmentation masks and their corresponding viewpoint, the space c
 The model utilizes differentiable rendering to produce high-quality images of transparent objects from a given viewpoint. The renderer is physics-based and uses the Fresnel equations and Snell's law to calculate complex light paths. Differentiable rendering is an exciting, new field that emerged in the last years as it allows for backpropagation through the rendering layer. This video [^52] provides a good introductory overview of the topic.
 To render the image from one viewpoint, the differentiable rendering layer requires the environment map $E$ and the estimated normal maps $N^1$, $N^2$ for this particular viewpoint. It outputs the rendered image, a binary mask indicating points where total internal reflection occurred and the pointwise rendering error with masked out environment. The rendering error map is calculated by comparing the rendered image to the ground truth image, cf. Fig. 5.
 
-![](https://i.imgur.com/BHNdgq6.png)
-###### Fig. 5: Rendered image, total internal reflection mask and rendering error for a transparent object
+![](https://i.imgur.com/BHNdgq6.png "Fig. 5: Rendered image, total internal reflection mask and rendering error for a transparent object")
 
 
 
 ### Cost volume
 The search space to find the correct normal maps $N^1$, $N^2$ is enormous. Each point in the front and back normal map could have a completely different surface normal. As stated before, the visual hull initialized normal maps are a good estimate for the ground truth normal maps. Therefore, the search space will be restricted to normal maps close to the visual hull initialized normals. To further reduce the search space, $K$ normal maps for the front and back surface are randomly sampled around the visual hull initialized normal maps. $K$ normal maps for both $N^1$ and $N^2$ lead to $K \times K$ combinations. According to the authors, $K=4$ gives good results. Higher values for $K$ only increase the computational complexity without improving the quality of the normal estimations. The entire cost volume consists of the front and back normals, the rendering error and the total internal reflection mask, cf. Fig. 6.
 
-![](https://i.imgur.com/TQfjvxk.png)
-###### Fig. 6: The cost volume
+![](https://i.imgur.com/TQfjvxk.png "Fig. 6: The cost volume")
 
 
 
@@ -123,8 +118,7 @@ Poisson surface reconstruction was first introduced in 2006 [^53] and is still u
 # Evaluation
 ## Qualitative results
 
-![](https://i.imgur.com/ELmYXsF.gif)
-###### Fig. 7: Qualitative results of Li et al.
+![](https://i.imgur.com/ELmYXsF.gif "Fig. 7: Qualitative results of Li et al.")
 At first sight, the quality of the reconstructions looks really good. The
 scenes look reasonable and no big differences between ground truth and reconstructions are visible.
 
@@ -140,8 +134,7 @@ The authors claim that real-world testing can be done by "light-weight mobile ph
 Quick reminder: this is deep learning research. It comes as no big surprise, that there is a newer paper [^60], with a different approach, that works better. This newer paper is by Lyu et al. and it's the successor of [^31]. Figure 5 shows the qualitative results of Li et al.[^1] compared to Lyu et al. The left side presents the results of Lyu et al. (1st column) compared with their ground truth (2nd column). On the right side, the results of Li et al. are displayed (ground truth: 3rd column, reconstruction: 4th column).
 
 ![](https://i.imgur.com/FA2KbQJ.png)
-![](https://i.imgur.com/K4vB6kA.png)
-###### Fig. 8: Qualitative comparison between Li et al.[^1] and Lyu et al. [^60]
+![](https://i.imgur.com/K4vB6kA.png "Fig. 8: Qualitative comparison between Li et al.[^1] and Lyu et al. [^60]")
 
 It is clearly visible that the results of Li et al.[^1] are oversmoothed. There is no space between the hand and the head of the monkey. Additionally, neither the eyes of the dog nor the monkey are visible in the reconstructions. Lyu et al.[^60] on the other side successfully reconstructs the eyes of both animals and clearly separates the hand from the head of the monkey. One possible reason for this oversmoothing is the average pooling in the modified PointNet++. It has to be taken into account, however, that the underlying ground truth in both papers is slightly different and that Li et al.[^1] optimized for easy acquisition of the shape. Lyu et al.[^60] improved their acquisition ease compare to [^31] but is still more restricted than Li et al.[^1]. A quantitative comparison between both papers can be found in Table 1. It displays the reconstruction error in the form of the average per-vertex distance to the corresponding ground truth. Lyu et al. was able to cut the per-vertex distance approximately in half for all tested shapes.
 
