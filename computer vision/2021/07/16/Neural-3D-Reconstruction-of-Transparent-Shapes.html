@@ -97,7 +97,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      15 min read
+      14 min read
     
 </span></p>
 
@@ -138,15 +138,13 @@ A paper from 2018 by Wu et al. <sup id="fnref:31:1" role="doc-noteref"><a href="
 <p>A normal map encodes the surface normal for each point in an image. The color at a certain point indicates the direction of the surface at this particular point. The color at each point is described by the three color channels $[R,G,B]$. A normal map simply maps the $[X,Y,Z]$-direction of the surface normals to the color channels.</p>
 
 <h2 id="optics-fundamentals">Optics fundamentals</h2>
-<p><img src="https://i.imgur.com/5yJ0dqn.png" alt="" /></p>
-<h6 id="fig-2-superposition-of-reflected-and-refracted-environment-images-on-a-window-pane">Fig. 2: Superposition of reflected and refracted environment images on a window pane.</h6>
+<p><img src="https://i.imgur.com/5yJ0dqn.png" alt="" title="Fig. 2: Superposition of reflected and refracted environment images on a window pane" /></p>
 
 <p>Light propagates on straight paths through vacuum, air and homogeneous transparent materials. At the interface of two optically different materials, the propagation changes: In most configurations, a single path is split into two paths. For large angles, all light reflects back into the object and no light refracts. This is called total internal reflection. Snell’s law of refraction and the Fresnel equations allow calculating precise angles of reflection and refraction and the fraction of reflected and refracted light. In an image acquisition situation, beam splitting creates superimposed images. The higher the index of refraction (IOR, denoted $\text{n}_1$ and $\text{n}_2$ in Fig. 2), the slower the light travels in the optically dense matter, the stronger the surface reflection and the higher the angles of refraction and the shift of the refracted image. More about these concepts can be found at <sup id="fnref:41" role="doc-noteref"><a href="#fn:41" class="footnote" rel="footnote">7</a></sup>, <sup id="fnref:40" role="doc-noteref"><a href="#fn:40" class="footnote" rel="footnote">8</a></sup> and <sup id="fnref:42" role="doc-noteref"><a href="#fn:42" class="footnote" rel="footnote">9</a></sup>.</p>
 
 <h1 id="proposed-method">Proposed method</h1>
 <h2 id="problem-setup">Problem setup</h2>
-<p><img src="https://i.imgur.com/j50ia0g.png" alt="" /></p>
-<h6 id="fig-3-problem-setup">Fig. 3: Problem setup</h6>
+<p><img src="https://i.imgur.com/j50ia0g.png" alt="" title="Fig. 3: Problem setup" /></p>
 
 <p>The inputs to the model are</p>
 <ul>
@@ -156,8 +154,7 @@ A paper from 2018 by Wu et al. <sup id="fnref:31:1" role="doc-noteref"><a href="
   <li>the index of refraction of the transparent material.</li>
 </ul>
 
-<p><img src="https://i.imgur.com/1bG0ran.png" alt="" /></p>
-<h6 id="fig-4-light-path-visualization-with-local-surface-normals-n1-and-n2">Fig. 4: Light path visualization with local surface normals $N^1$ and $N^2$</h6>
+<p><img src="https://i.imgur.com/1bG0ran.png" alt="" title="Fig. 4: Light path visualization with local surface normals $N^1$ and $N^2$" /></p>
 
 <p>The proposed method limits the light path simulation to a maximum of two bounces. The camera looks onto the transparent object.</p>
 
@@ -180,14 +177,12 @@ A paper from 2018 by Wu et al. <sup id="fnref:31:1" role="doc-noteref"><a href="
 <p>The model utilizes differentiable rendering to produce high-quality images of transparent objects from a given viewpoint. The renderer is physics-based and uses the Fresnel equations and Snell’s law to calculate complex light paths. Differentiable rendering is an exciting, new field that emerged in the last years as it allows for backpropagation through the rendering layer. This video <sup id="fnref:52" role="doc-noteref"><a href="#fn:52" class="footnote" rel="footnote">14</a></sup> provides a good introductory overview of the topic.
 To render the image from one viewpoint, the differentiable rendering layer requires the environment map $E$ and the estimated normal maps $N^1$, $N^2$ for this particular viewpoint. It outputs the rendered image, a binary mask indicating points where total internal reflection occurred and the pointwise rendering error with masked out environment. The rendering error map is calculated by comparing the rendered image to the ground truth image, cf. Fig. 5.</p>
 
-<p><img src="https://i.imgur.com/BHNdgq6.png" alt="" /></p>
-<h6 id="fig-5-rendered-image-total-internal-reflection-mask-and-rendering-error-for-a-transparent-object">Fig. 5: Rendered image, total internal reflection mask and rendering error for a transparent object</h6>
+<p><img src="https://i.imgur.com/BHNdgq6.png" alt="" title="Fig. 5: Rendered image, total internal reflection mask and rendering error for a transparent object" /></p>
 
 <h3 id="cost-volume">Cost volume</h3>
 <p>The search space to find the correct normal maps $N^1$, $N^2$ is enormous. Each point in the front and back normal map could have a completely different surface normal. As stated before, the visual hull initialized normal maps are a good estimate for the ground truth normal maps. Therefore, the search space will be restricted to normal maps close to the visual hull initialized normals. To further reduce the search space, $K$ normal maps for the front and back surface are randomly sampled around the visual hull initialized normal maps. $K$ normal maps for both $N^1$ and $N^2$ lead to $K \times K$ combinations. According to the authors, $K=4$ gives good results. Higher values for $K$ only increase the computational complexity without improving the quality of the normal estimations. The entire cost volume consists of the front and back normals, the rendering error and the total internal reflection mask, cf. Fig. 6.</p>
 
-<p><img src="https://i.imgur.com/TQfjvxk.png" alt="" /></p>
-<h6 id="fig-6-the-cost-volume">Fig. 6: The cost volume</h6>
+<p><img src="https://i.imgur.com/TQfjvxk.png" alt="" title="Fig. 6: The cost volume" /></p>
 
 <h3 id="normal-prediction-network">Normal prediction network</h3>
 <p>To estimate the surface normals an encoder-decoder CNN is used. The cost volume is still too large to be fed into the network. Therefore, the authors first use learnable pooling to perform feature extraction on the cost volume. They concatenate the condensed cost volume together with</p>
@@ -216,9 +211,8 @@ To render the image from one viewpoint, the differentiable rendering layer requi
 <h1 id="evaluation">Evaluation</h1>
 <h2 id="qualitative-results">Qualitative results</h2>
 
-<p><img src="https://i.imgur.com/ELmYXsF.gif" alt="" /></p>
-<h6 id="fig-7-qualitative-results-of-li-et-al">Fig. 7: Qualitative results of Li et al.</h6>
-<p>At first sight, the quality of the reconstructions looks really good. The
+<p><img src="https://i.imgur.com/ELmYXsF.gif" alt="" title="Fig. 7: Qualitative results of Li et al." />
+At first sight, the quality of the reconstructions looks really good. The
 scenes look reasonable and no big differences between ground truth and reconstructions are visible.</p>
 
 <h2 id="testing-on-real-world-data">Testing on real-world data</h2>
@@ -235,20 +229,19 @@ scenes look reasonable and no big differences between ground truth and reconstru
 <p>Quick reminder: this is deep learning research. It comes as no big surprise, that there is a newer paper <sup id="fnref:60" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup>, with a different approach, that works better. This newer paper is by Lyu et al. and it’s the successor of <sup id="fnref:31:2" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup>. Figure 5 shows the qualitative results of Li et al.<sup id="fnref:1:3" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> compared to Lyu et al. The left side presents the results of Lyu et al. (1st column) compared with their ground truth (2nd column). On the right side, the results of Li et al. are displayed (ground truth: 3rd column, reconstruction: 4th column).</p>
 
 <p><img src="https://i.imgur.com/FA2KbQJ.png" alt="" />
-<img src="https://i.imgur.com/K4vB6kA.png" alt="" /></p>
-<h6 id="fig-8-qualitative-comparison-between-li-et-al-and-lyu-et-al-">Fig. 8: Qualitative comparison between Li et al.<sup id="fnref:1:4" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al. <sup id="fnref:60:1" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup></h6>
+<img src="https://i.imgur.com/K4vB6kA.png" alt="" title="Fig. 8: Qualitative comparison between Li et al.[^1] and Lyu et al. [^60]" /></p>
 
-<p>It is clearly visible that the results of Li et al.<sup id="fnref:1:5" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> are oversmoothed. There is no space between the hand and the head of the monkey. Additionally, neither the eyes of the dog nor the monkey are visible in the reconstructions. Lyu et al.<sup id="fnref:60:2" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> on the other side successfully reconstructs the eyes of both animals and clearly separates the hand from the head of the monkey. One possible reason for this oversmoothing is the average pooling in the modified PointNet++. It has to be taken into account, however, that the underlying ground truth in both papers is slightly different and that Li et al.<sup id="fnref:1:6" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> optimized for easy acquisition of the shape. Lyu et al.<sup id="fnref:60:3" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> improved their acquisition ease compare to <sup id="fnref:31:3" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup> but is still more restricted than Li et al.<sup id="fnref:1:7" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. A quantitative comparison between both papers can be found in Table 1. It displays the reconstruction error in the form of the average per-vertex distance to the corresponding ground truth. Lyu et al. was able to cut the per-vertex distance approximately in half for all tested shapes.</p>
+<p>It is clearly visible that the results of Li et al.<sup id="fnref:1:4" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> are oversmoothed. There is no space between the hand and the head of the monkey. Additionally, neither the eyes of the dog nor the monkey are visible in the reconstructions. Lyu et al.<sup id="fnref:60:1" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> on the other side successfully reconstructs the eyes of both animals and clearly separates the hand from the head of the monkey. One possible reason for this oversmoothing is the average pooling in the modified PointNet++. It has to be taken into account, however, that the underlying ground truth in both papers is slightly different and that Li et al.<sup id="fnref:1:5" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> optimized for easy acquisition of the shape. Lyu et al.<sup id="fnref:60:2" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> improved their acquisition ease compare to <sup id="fnref:31:3" role="doc-noteref"><a href="#fn:31" class="footnote" rel="footnote">4</a></sup> but is still more restricted than Li et al.<sup id="fnref:1:6" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. A quantitative comparison between both papers can be found in Table 1. It displays the reconstruction error in the form of the average per-vertex distance to the corresponding ground truth. Lyu et al. was able to cut the per-vertex distance approximately in half for all tested shapes.</p>
 
-<h6 id="table-1-reconstruction-error-of-li-et-al-and-lyu-et-al-based-on-table-1-of-">Table 1: Reconstruction error of Li et al.<sup id="fnref:1:8" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al.<sup id="fnref:60:4" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> (based on Table 1 of <sup id="fnref:60:5" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup>)</h6>
+<h6 id="table-1-reconstruction-error-of-li-et-al-and-lyu-et-al-based-on-table-1-of-">Table 1: Reconstruction error of Li et al.<sup id="fnref:1:7" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and Lyu et al.<sup id="fnref:60:3" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup> (based on Table 1 of <sup id="fnref:60:4" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup>)</h6>
 
 <table>
   <thead>
     <tr>
       <th style="text-align: left"> </th>
       <th style="text-align: center">initial</th>
-      <th style="text-align: center">Li et al. 2020<sup id="fnref:1:9" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></th>
-      <th style="text-align: center">Lyu et al. 2020<sup id="fnref:60:6" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup></th>
+      <th style="text-align: center">Li et al. 2020<sup id="fnref:1:8" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></th>
+      <th style="text-align: center">Lyu et al. 2020<sup id="fnref:60:5" role="doc-noteref"><a href="#fn:60" class="footnote" rel="footnote">19</a></sup></th>
     </tr>
   </thead>
   <tbody>
@@ -283,14 +276,14 @@ scenes look reasonable and no big differences between ground truth and reconstru
 
 <p>This paper proposed a novel approach that combined different paths and provides good results, but the reconstruction is not as effortless as claimed.</p>
 
-<p>For the sake of simplicity, some relevant details were left out. In case of questions, read the paper <sup id="fnref:1:10" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and the code <sup id="fnref:2:1" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">11</a></sup> or <a href="mailto:christian.wallenwein@tum.de">send me an email</a>. Thank you to Yu-Ying Yeh for clarifying questions about the paper, Eckhard Siegmann for suggestions and proofreading and Pengyuan for tips and advice.</p>
+<p>For the sake of simplicity, some relevant details were left out. In case of questions, read the paper <sup id="fnref:1:9" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and the code <sup id="fnref:2:1" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">11</a></sup> or <a href="mailto:christian.wallenwein@tum.de">send me an email</a>. Thank you to Yu-Ying Yeh for clarifying questions about the paper, Eckhard Siegmann for suggestions and proofreading and Pengyuan for tips and advice.</p>
 
 <h1 id="references">References</h1>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:1" role="doc-endnote">
-      <p>Li, Zhengqin, Yu-Ying Yeh, and Manmohan Chandraker. “Through the looking glass: neural 3D reconstruction of transparent shapes.” Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2020. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a> <a href="#fnref:1:2" class="reversefootnote" role="doc-backlink">&#8617;<sup>3</sup></a> <a href="#fnref:1:3" class="reversefootnote" role="doc-backlink">&#8617;<sup>4</sup></a> <a href="#fnref:1:4" class="reversefootnote" role="doc-backlink">&#8617;<sup>5</sup></a> <a href="#fnref:1:5" class="reversefootnote" role="doc-backlink">&#8617;<sup>6</sup></a> <a href="#fnref:1:6" class="reversefootnote" role="doc-backlink">&#8617;<sup>7</sup></a> <a href="#fnref:1:7" class="reversefootnote" role="doc-backlink">&#8617;<sup>8</sup></a> <a href="#fnref:1:8" class="reversefootnote" role="doc-backlink">&#8617;<sup>9</sup></a> <a href="#fnref:1:9" class="reversefootnote" role="doc-backlink">&#8617;<sup>10</sup></a> <a href="#fnref:1:10" class="reversefootnote" role="doc-backlink">&#8617;<sup>11</sup></a></p>
+      <p>Li, Zhengqin, Yu-Ying Yeh, and Manmohan Chandraker. “Through the looking glass: neural 3D reconstruction of transparent shapes.” Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2020. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a> <a href="#fnref:1:2" class="reversefootnote" role="doc-backlink">&#8617;<sup>3</sup></a> <a href="#fnref:1:3" class="reversefootnote" role="doc-backlink">&#8617;<sup>4</sup></a> <a href="#fnref:1:4" class="reversefootnote" role="doc-backlink">&#8617;<sup>5</sup></a> <a href="#fnref:1:5" class="reversefootnote" role="doc-backlink">&#8617;<sup>6</sup></a> <a href="#fnref:1:6" class="reversefootnote" role="doc-backlink">&#8617;<sup>7</sup></a> <a href="#fnref:1:7" class="reversefootnote" role="doc-backlink">&#8617;<sup>8</sup></a> <a href="#fnref:1:8" class="reversefootnote" role="doc-backlink">&#8617;<sup>9</sup></a> <a href="#fnref:1:9" class="reversefootnote" role="doc-backlink">&#8617;<sup>10</sup></a></p>
     </li>
     <li id="fn:34" role="doc-endnote">
       <p>Murase, Hiroshi. “Surface shape reconstruction of an undulating transparent object.” Proceedings Third International Conference on Computer Vision, 1990 <a href="#fnref:34" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
@@ -344,7 +337,7 @@ scenes look reasonable and no big differences between ground truth and reconstru
       <p>Schonberger, Johannes L., and Jan-Michael Frahm. “Structure-from-motion revisited.” Proceedings of the IEEE conference on computer vision and pattern recognition. 2016. <a href="#fnref:61" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:60" role="doc-endnote">
-      <p>Lyu, Jiahui, et al. “Differentiable refraction-tracing for mesh reconstruction of transparent objects.” ACM Transactions on Graphics (TOG) 39.6 (2020): 1-13. <a href="#fnref:60" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:60:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a> <a href="#fnref:60:2" class="reversefootnote" role="doc-backlink">&#8617;<sup>3</sup></a> <a href="#fnref:60:3" class="reversefootnote" role="doc-backlink">&#8617;<sup>4</sup></a> <a href="#fnref:60:4" class="reversefootnote" role="doc-backlink">&#8617;<sup>5</sup></a> <a href="#fnref:60:5" class="reversefootnote" role="doc-backlink">&#8617;<sup>6</sup></a> <a href="#fnref:60:6" class="reversefootnote" role="doc-backlink">&#8617;<sup>7</sup></a></p>
+      <p>Lyu, Jiahui, et al. “Differentiable refraction-tracing for mesh reconstruction of transparent objects.” ACM Transactions on Graphics (TOG) 39.6 (2020): 1-13. <a href="#fnref:60" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:60:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a> <a href="#fnref:60:2" class="reversefootnote" role="doc-backlink">&#8617;<sup>3</sup></a> <a href="#fnref:60:3" class="reversefootnote" role="doc-backlink">&#8617;<sup>4</sup></a> <a href="#fnref:60:4" class="reversefootnote" role="doc-backlink">&#8617;<sup>5</sup></a> <a href="#fnref:60:5" class="reversefootnote" role="doc-backlink">&#8617;<sup>6</sup></a></p>
     </li>
   </ol>
 </div>
