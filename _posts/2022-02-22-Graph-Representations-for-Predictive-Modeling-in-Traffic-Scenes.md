@@ -26,9 +26,7 @@ The remainder of this report is organized as follows: Section II introduces rele
 
 ## Graph Neural Networks
 
-Traffic scenarios can be represented effectively using graphs. A graph $G$ is a data structure that consists of a set of nodes (or vertices) $V$ and a set of edges $E$, i.e., $G=(V,E)$. $e_{ij}=(v_i,v_j)\in E$ denotes an edge pointing from $v_j$ to $v_i$, where $v_i\in V$. $N(v) = \{u\in V \mid (v,u)\in E\}$ denotes the neighborhood of a node $v$. The node features $\mathbf{h} \in \mathbf{R}^{n \times d}$ are defined as
-
-$\mathbf{h} = \{ \vec{h}_i \mid i=1,...,n \}$
+Traffic scenarios can be represented effectively using graphs. A graph $G$ is a data structure that consists of a set of nodes (or vertices) $V$ and a set of edges $E$, i.e., $G=(V,E)$. $e_{ij}=(v_i,v_j)\in E$ denotes an edge pointing from $v_j$ to $v_i$, where $v_i\in V$. $N(v) = \{u\in V \mid (v,u)\in E\}$ denotes the neighborhood of a node $v$. The node features $\mathbf{h} \in \mathbf{R}^{n \times d}$ are defined as $\mathbf{h} = \{ \vec{h}_i \mid i=1,...,n \}$
 
 $\mathbf{h}$
 
