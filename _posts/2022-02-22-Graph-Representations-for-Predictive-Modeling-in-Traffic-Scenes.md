@@ -26,13 +26,11 @@ The remainder of this report is organized as follows: Section II introduces rele
 
 ## Graph Neural Networks
 
-Traffic scenarios can be represented effectively using graphs. A graph $G$ is a data structure that consists of a set of nodes (or vertices) $V$ and a set of edges $E$, i.e., $G=(V,E)$. $e_{ij}=(v_i,v_j)\in E$ denotes an edge pointing from $v_j$ to $v_i$, where $v_i\in V$. $N(v) = \{u\in V \mid (v,u)\in E\}$ denotes the neighborhood of a node $v$. The node features $\mathbf{h} \in \mathbf{R}^{n \times d}$ are defined as $\mathbf{h} = \{ \vec{h}_i \mid i=1,...,n \}$
-
-$\mathbf{h}$
-
-$\vec{h}_i \mid i=1,...,n$
-
-, where $\vec{h}_i \in \mathbf{R}^{d}$ represents the feature vector of the node $i$, $n = \vert V \vert$ denotes the number of nodes and $d$ denotes the dimension of the node feature vector. The edge features $\mathbf{e} \in \mathbf{R}^{m \times c}$ is defined as $\{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}$ $\frac{1}{2}$, where $\vec{e}_{ij} \in \mathbf{R}^{c}$ represent the feature vector of the edge $(i,j)$, $m = \vert E \vert$ denotes the number of edges and $c$ denotes the dimension of the edge feature vector.
+Traffic scenarios can be represented effectively using graphs. A graph $G$ is a data structure that consists of a set of nodes (or vertices) $V$ and a set of edges $E$, i.e., $G=(V,E)$. $e_{ij}=(v_i,v_j)\in E$ denotes an edge pointing from $v_j$ to $v_i$, where $v_i\in V$. $N(v) = \{u\in V \mid (v,u)\in E\}$ denotes the neighborhood of a node $v$. The node features $\mathbf{h} \in \mathbf{R}^{n \times d}$ are defined as 
+$\mathbf{h} = \{ \vec{h}_i \mid i=1,...,n \}$
+, where
+$\vec{h}_i \in \mathbf{R}^d$
+represents the feature vector of the node $i$, $n = \vert V \vert$ denotes the number of nodes and $d$ denotes the dimension of the node feature vector. The edge features $\mathbf{e} \in \mathbf{R}^{m \times c}$ is defined as $\{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}$ $\frac{1}{2}$, where $\vec{e}_{ij} \in \mathbf{R}^{c}$ represent the feature vector of the edge $(i,j)$, $m = \vert E \vert$ denotes the number of edges and $c$ denotes the dimension of the edge feature vector.
 
 GNN uses a form of neural message passing (MPNN) to learn graph-structured data. MPNN treats graph convolutions as a message passing process in which vector messages can be passed from one node to another along edges directly. MPNN runs $L$ step message passing iterations to let messages propagate further[^4]. The message passing function at message passing step $l$ is defined as $\vec{h}^{l}_i = f_n(\vec{h}^{l-1}_i,m^{l}_i)$, where $m^{l}_i = \Phi(\{\vec{e}^{\,l}_{ij}\}_{j\in N(i)})$, $\vec{e}^{\,l}_{ij} = f_e(\vec{h}^{l-1}_i,\vec{h}^{l-1}_j,\vec{e}^{\, l-1}_{ij})$. $m^{l}_i$ represents the message of node $i$ at message passing step $l$, $\Phi$ denotes an aggregation operation, $f_n$ and $f_e$ are functions with learnable parameters. 
 
@@ -53,9 +51,10 @@ Edge-Featured Graph Attention Networks (EGAT) [^6] are an extension of Graph Att
 First, the node features $\mathbf{h}$ and edge features $\mathbf{e}$ are transformed by a linear layer (Eq. 2, 3),
 
 $$\mathbf{h}^* = \mathbf{W}_{h}\cdot\mathbf{h}$$
+
 $$\mathbf{e}^* = \mathbf{W}_{e}\cdot\mathbf{e}$$
 
-where $\mathbf{h}^*$ and $\mathbf{e}^*$ are the projected node features and edge features respectively.
+where $ \mathbf{h}^* $ and $\mathbf{e}^*$ are the projected node features and edge features respectively.
 
 ### Edge enhanced attention
 
