@@ -5,7 +5,7 @@ categories: [representation learning]
 image: /images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/encoder-output-extraction.png
 layout: post
 toc: false
-hide: false
+hide: true
 ---
 
 ::: figure*
