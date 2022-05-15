@@ -73,8 +73,11 @@ $$\label{angle_cos}     \cos\alpha_{ij} = \frac{x_i-x_j}{d_{ij}}$$
 Thus, our constructed graph consists of the node feature vector $\mathbf{h}$ (Eq. $12$) and the edge feature vector $\mathbf{e}$ (Eq. $13$).
 
 $$ \vec{h}_i = [x_i, y_i] $$
+
 $$ \vec{e}_{ij} = [d_{ij}, \sin(\alpha_{ij}), \cos(\alpha_{ij})] $$
+
 $$ \mathbf{h} = \{\vec{h}_i \mid i=1,...,N\} $$
+
 $$ \mathbf{e} = \{\vec{e}_{ij} \mid i=1,...,N,j=1,...,N_i\} $$
 
 ## Maximum closeness
