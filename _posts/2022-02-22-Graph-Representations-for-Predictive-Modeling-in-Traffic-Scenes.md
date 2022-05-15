@@ -8,26 +8,6 @@ toc: false
 hide: true
 ---
 
-::: figure*
-![image](./images/IN.pdf) ![image](./images/tumlogo.pdf)
-
-[Fakultät für Informatik]{.sans-serif}\
-[Lehrstuhl für Echtzeitsysteme und Robotik]{.sans-serif}\
-**[Graph Representations for Predictive Modeling in Traffic
-Scenes]{.sans-serif}**\
-**[Yunong Wu, Christian Wallenwein]{.sans-serif}**\
-
-  -------------------------------- ------------------------------------------------
-  **[Advisor:]{.sans-serif}**      [Eivind Meyer, Luis Gressenbuch]{.sans-serif}
-                                   
-  **[Supervisor:]{.sans-serif}**   [Prof. Dr.-Ing. Matthias Althoff]{.sans-serif}
-                                   
-  **[Submission:]{.sans-serif}**   [21. February 2022]{.sans-serif}
-  -------------------------------- ------------------------------------------------
-:::
-
-[This is the link text](#headin)
-
 # Abstract
 Some deep reinforcement learning models are difficult to use in autonomous driving, as they require too much training time to learn useful and general control policies. This problem can be largely alleviated if the reinforcement learning agent has a meaningful representation of its surrounding environment. Representation learning is a set of techniques to achieve this goal. In this work, we develop a novel graph neural network and train it to reconstruct important information of the surrounding environment from the perspective of the ego agent. We further extract an encoded hidden state from the model which can be used as a meaningful representation of the surrounding environment for reinforcement learning agents.
 
@@ -46,7 +26,7 @@ The remainder of this report is organized as follows: Section II introduces rele
 
 ## Graph Neural Networks
 
-Traffic scenarios can be represented effectively using graphs. A graph $G$ is a data structure that consists of a set of nodes (or vertices) $V$ and a set of edges $E$, i.e., $G=(V,E)$. $e_{ij}=(v_i,v_j)\in E$ denotes an edge pointing from $v_j$ to $v_i$, where $v_i\in V$. $N(v) = \{u\in V|(v,u)\in E\}$ denotes the neighborhood of a node $v$. The node features $\mathbf{h} \in \mathbf{R}^{n \times d}$ is defined as $\mathbf{h} = \{\vec{h}_i|i=1,...,n\}$, where $\vec{h}_i \in \mathbf{R}^{d}$ represents the feature vector of the node $i$, $n = \left| V\right|$ denotes the number of nodes and $d$ denotes the dimension of the node feature vector. The edge features $\mathbf{e} \in \mathbf{R}^{m \times c}$ is defined as $\{\vec{e}_{ij}|i=1,...,n,j=1,...,N(i)\}$ $\frac{1}{2}$, where $\vec{e}_{ij} \in \mathbf{R}^{c}$ represent the feature vector of the edge $(i,j)$, $m = \left| E\right|$ denotes the number of edges and $c$ denotes the dimension of the edge feature vector. 
+Traffic scenarios can be represented effectively using graphs. A graph $G$ is a data structure that consists of a set of nodes (or vertices) $V$ and a set of edges $E$, i.e., $G=(V,E)$. $e_{ij}=(v_i,v_j)\in E$ denotes an edge pointing from $v_j$ to $v_i$, where $v_i\in V$ . $N(v) = \{u\in V \mid (v,u)\in E\}$ denotes the neighborhood of a node $v$. The node features $\mathbf{h} \in \mathbf{R}^{n \times d}$ is defined as $\mathbf{h} = \{\vec{h}_i \mid i=1,...,n\}$, where $\vec{h}_i \in \mathbf{R}^{d}$ represents the feature vector of the node $i$, $n = \vert V \vert$ denotes the number of nodes and $d$ denotes the dimension of the node feature vector. The edge features $\mathbf{e} \in \mathbf{R}^{m \times c}$ is defined as $\{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}$ $\frac{1}{2}$, where $\vec{e}_{ij} \in \mathbf{R}^{c}$ represent the feature vector of the edge $(i,j)$, $m = \vert E \vert$ denotes the number of edges and $c$ denotes the dimension of the edge feature vector. 
 
 GNN uses a form of neural message passing (MPNN) to learn graph-structured data. MPNN treats graph convolutions as a message passing process in which vector messages can be passed from one node to another along edges directly. MPNN runs $L$ step message passing iterations to let messages propagate further[^4]. The message passing function at message passing step $l$ is defined as $\vec{h}^{l}_i = f_n(\vec{h}^{l-1}_i,m^{l}_i)$, where $m^{l}_i = \Phi(\{\vec{e}^{\,l}_{ij}\}_{j\in N(i)})$, $\vec{e}^{\,l}_{ij} = f_e(\vec{h}^{l-1}_i,\vec{h}^{l-1}_j,\vec{e}^{\, l-1}_{ij})$. $m^{l}_i$ represents the message of node $i$ at message passing step $l$, $\Phi$ denotes an aggregation operation, $f_n$ and $f_e$ are functions with learnable parameters. 
 
@@ -60,7 +40,7 @@ The concatenated vector $[\vec{h}_i,\vec{h}_j-\vec{h}_i]$ is transformed by a Mu
 
 ## Edge-Featured Graph Attention Network
 
-Edge-Featured Graph Attention Networks (EGAT) [^6] are an extension of Graph Attention Neural Networks (GAT) [^7]. Compared to GATs, EGATs allow for implicitly assigning different importances to different neighbor nodes, considering not only node features but also edge features. They don't depend on knowing the entire graph structure upfront. Additionally, EGAT is computationally efficient. It does not require costly matrix operations. We use the node attention block of EGAT layer in our experiment. A node attention block of EGAT layer takes both node features $\mathbf{h}$ and edge features $\mathbf{e}$ as input and produces a new set of node features $\mathbf{h}'$ as output, where $\mathbf{h}'=\{\vec{h}_i'|i=1,...,n\}$.
+Edge-Featured Graph Attention Networks (EGAT) [^6] are an extension of Graph Attention Neural Networks (GAT) [^7]. Compared to GATs, EGATs allow for implicitly assigning different importances to different neighbor nodes, considering not only node features but also edge features. They don't depend on knowing the entire graph structure upfront. Additionally, EGAT is computationally efficient. It does not require costly matrix operations. We use the node attention block of EGAT layer in our experiment. A node attention block of EGAT layer takes both node features $\mathbf{h}$ and edge features $\mathbf{e}$ as input and produces a new set of node features $\mathbf{h}'$ as output, where $\mathbf{h}'=\{\vec{h}_i' \mid i=1,...,n\}$.
 
 ### Node and edge feature transformation
 
@@ -68,12 +48,12 @@ First, the node features $\mathbf{h}$ and edge features $\mathbf{e}$ are transfo
 
 ### Edge enhanced attention
 
-Given a target node $i$, the attention coefficient $\alpha_{i,j}$ is calculated by Eq. [\[c3\]](#c3){reference-type="ref" reference="c3"}, $\alpha_{i,j}$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features. $$\alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*}||\vec{h}_j^{*}||\vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i}||\vec{h}^*_{j}||\vec{e}^*_{ij}])} \label{c3}$$ Here, $\mathbf{a}$ is a linear layer and $N(i)$ is the neighbor nodes of node i in the graph. The node feature $\vec{h}^{'}_{i}$ is then updated by calculating a weighted sum of edge-integrated node features over its neighbor nodes, followed by a sigmoid function. $$\begin{aligned}         \vec{h}'_{i}=\sigma\left(\sum_{j\in N(i)}\alpha_{ij}\mathbf{W}_h^\mathrm{T}[\vec{e}^*_{ij}||\vec{h^*_{j}}]\right)     \end{aligned} \label{c4}$$
+Given a target node $i$, the attention coefficient $\alpha_{i,j}$ is calculated by Eq. [\[c3\]](#c3){reference-type="ref" reference="c3"}, $\alpha_{i,j}$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features. $$\alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*} \Vert \vec{h}_j^{*} \Vert \vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i} \Vert \vec{h}^*_{j} \Vert \vec{e}^*_{ij}])} \label{c3}$$ Here, $\mathbf{a}$ is a linear layer and $N(i)$ is the neighbor nodes of node i in the graph. The node feature $\vec{h}^{'}_{i}$ is then updated by calculating a weighted sum of edge-integrated node features over its neighbor nodes, followed by a sigmoid function. $$\begin{aligned}         \vec{h}'_{i}=\sigma\left(\sum_{j\in N(i)}\alpha_{ij}\mathbf{W}_h^\mathrm{T}[\vec{e}^*_{ij} \Vert \vec{h^*_{j}}]\right)     \end{aligned} \label{c4}$$
 
 Similar to GAT, we apply multi-head attention and run several independent attention mechanisms to get a stable self-attention mechanism output. Additionally, it allows the model to jointly attend to the information from different representation sub-spaces at different positions. The output of each attention head is concatenated as the final updated node feature $\vec{h}^{+}_{i}$.
 
-$$\vec{h}^{+}_{i}=\mathop{||}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$
-Here, $K$ is the number of attention heads and $\mathop{||}$ indicates the concatenation operation.
+$$\vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$
+Here, $K$ is the number of attention heads and $\mathop{\Vert}$ indicates the concatenation operation.
 
 # Methodology
 
@@ -90,17 +70,17 @@ $$\label{euclidean_distance}     d_{ij} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}$$
 $$\label{angle_sin}     \sin\alpha_{ij} = \frac{y_i-y_j}{d_{ij}}$$ 
 $$\label{angle_cos}     \cos\alpha_{ij} = \frac{x_i-x_j}{d_{ij}}$$
 
-Thus, our constructed graph consists of the node feature vector $\mathbf{h}$ (Eq. $12$) and the edge feature vector $\mathbf{e}$ (Eq. $13$). $$\begin{aligned}     &\vec{h}_i = [x_i, y_i]\\     &\vec{e}_{ij} = [d_{ij}, \sin(\alpha_{ij}), \cos(\alpha_{ij})]\\     &\mathbf{h} = \{\vec{h}_i|i=1,...,N\}\\     &\mathbf{e} = \{\vec{e}_{ij}|i=1,...,N,j=1,...,N_i\}\end{aligned}$$
+Thus, our constructed graph consists of the node feature vector $\mathbf{h}$ (Eq. $12$) and the edge feature vector $\mathbf{e}$ (Eq. $13$). $$\begin{aligned}     &\vec{h}_i = [x_i, y_i]\\     &\vec{e}_{ij} = [d_{ij}, \sin(\alpha_{ij}), \cos(\alpha_{ij})]\\     &\mathbf{h} = \{\vec{h}_i \mid i=1,...,N\}\\     &\mathbf{e} = \{\vec{e}_{ij} \mid i=1,...,N,j=1,...,N_i\}\end{aligned}$$
 
 ## Maximum closeness
 
-We divide the area surrounding the ego agent into eight $45^{\circ}$ segments $\mathbf{R} = \{R_{i}|i=1,...,8\}$ as illustrated in Fig. [2](#Regions){reference-type="ref" reference="Regions"}, referred to as angular regions in the following. 
+We divide the area surrounding the ego agent into eight $45^{\circ}$ segments $\mathbf{R} = \{R_{i} \mid i=1,...,8\}$ as illustrated in Fig. [2](#Regions){reference-type="ref" reference="Regions"}, referred to as angular regions in the following. 
 
 ![Regions](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/regions.png "Fig. 2: Regions")
 
 We define closeness $c_{i,j} \in [0,1]$ (Eq. [\[closeness\]](#closeness){reference-type="ref" reference="closeness"}) as our proximity measure between the node $i$ (ego agent) and node $j$ (other traffic participants). Unlike the euclidean distance, closeness provides a smooth label and prevents discontinuities resulting from empty regions. $c_{i,j}$ is $0$ for all values greater than or equal to $D_{max}$ and $1$ if the euclidean distance $d_{i,j}$ is $0$. The maximum closeness of node $i$ in angular region $m$ is defined as ${c}^{+}_{i,m}$ (Eq. [\[closeness_angular_region\]](#closeness_angular_region){reference-type="ref" reference="closeness_angular_region"}). Our ground truth label, $\mathbf{c}^{+}$ (Eq. [\[closeness_ground_truth\]](#closeness_ground_truth){reference-type="ref" reference="closeness_ground_truth"}), is the vector of the maximum closenesses. 
 
-$$\label{closeness}     c_{i,j} = 1 - \frac{\min(d_{i,j},D_{max})}{D_{max}}$$ $$\label{closeness_angular_region}     c^{+}_{i,m} = \max_{j \in \mathcal{R}_m}\{c_{ij}\}$$ $$\label{closeness_ground_truth}     \mathbf{c}^{+} = \{c^{+}_{i,m}|i=1,...,N,m=1,...,8\}$$
+$$\label{closeness}     c_{i,j} = 1 - \frac{\min(d_{i,j},D_{max})}{D_{max}}$$ $$\label{closeness_angular_region}     c^{+}_{i,m} = \max_{j \in \mathcal{R}_m}\{c_{ij}\}$$ $$\label{closeness_ground_truth}     \mathbf{c}^{+} = \{c^{+}_{i,m} \mid i=1,...,N,m=1,...,8\}$$
 
 ## Model {#subsection:model}
 
