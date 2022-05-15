@@ -131,9 +131,36 @@ window.onload = wrap_img;
 
 <h2 id="graph-neural-networks">Graph Neural Networks</h2>
 
-<p>Traffic scenarios can be represented effectively using graphs. A graph $G$ is a data structure that consists of a set of nodes (or vertices) $V$ and a set of edges $E$, i.e., $G=(V,E)$. $e_{ij}=(v_i,v_j)\in E$ denotes an edge pointing from $v_j$ to $v_i$, where $v_i\in V$. $N(v) = {u\in V \mid (v,u)\in E}$ denotes the neighborhood of a node $v$. The node features
-$ \mathbf{h} \in \mathbf{R}^{n \times d} $
-are defined as
+<p>Traffic scenarios can be represented effectively using graphs. A graph
+$G$
+is a data structure that consists of a set of nodes (or vertices)
+$V$
+and a set of edges
+$E$
+, i.e., 
+$G=(V,E)$
+.
+$e_{ij}=(v_i,v_j) \in E $
+denotes an edge pointing from
+$v_j$
+to
+$v_i$,
+where
+$v_i\in V$
+.
+$N(v) = {u\in V \mid (v,u)\in E}$
+denotes the neighborhood of a node
+$v$
+. The node features
+$ \mathbf{h} $
+$ \mathbf{h} \in $
+$ \mathbf{h} \in \mathbf{R} $
+$ \mathbf{h} \in \mathbf{R}^{n} $
+$ \mathbf{h} \in \mathbf{R}^{n \times d} $</p>
+
+<p>$ \mathbf{h} \in \mathbf{R}^{n \times d} $</p>
+
+<p>are defined as
 $ \mathbf{h} = \lbrace \vec{h}<em>i \mid i=1,…,n \rbrace $
 , where
 $ \vec{h}_i \in \mathbf{R}^d $
