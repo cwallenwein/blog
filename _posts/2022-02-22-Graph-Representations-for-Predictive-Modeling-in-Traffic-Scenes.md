@@ -47,7 +47,19 @@ $N(v) = \{u\in V \mid (v,u)\in E\}$
 denotes the neighborhood of a node
 $v$
 . The node features
+
+$\mathbf{h}$
+
+$\mathbf{h} $
+
+$ \mathbf{h}$
+
 $ \mathbf{h} $
+
+
+
+
+
 $ \mathbf{h} \in $
 $ \mathbf{h} \in \mathbf{R} $
 $ \mathbf{h} \in \mathbf{R}^{n} $
