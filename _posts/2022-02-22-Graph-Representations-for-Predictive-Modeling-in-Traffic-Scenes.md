@@ -80,7 +80,15 @@ $ \mathbf{h} = \lbrace \vec{h}_i \mid i=1,...,n \rbrace $
 $ \mathbf{h} = \lbrace \vec{h}_i \mid i=1,...,n \rbrace $
 
 , where
+$\vec{h}_i \in \mathbf{R}^d $
+
+$\vec{h}_i \in \mathbf{R}^d $
+
+$ \vec{h}_i \in \mathbf{R}^d$
+
 $ \vec{h}_i \in \mathbf{R}^d $
+
+
 represents the feature vector of the node
 $ i $
 ,
