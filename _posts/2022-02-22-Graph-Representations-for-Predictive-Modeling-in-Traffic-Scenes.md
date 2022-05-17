@@ -47,48 +47,11 @@ $N(v) = \{u\in V \mid (v,u)\in E\}$
 denotes the neighborhood of a node
 $v$
 . The node features
-
-$\mathbf{h}$
-
-$\mathbf{h} $
-
-$ \mathbf{h}$
-
-$ \mathbf{h} $
-
-
-
-
-
-$ \mathbf{h} \in $
-$ \mathbf{h} \in \mathbf{R} $
-$ \mathbf{h} \in \mathbf{R}^{n} $
 $ \mathbf{h} \in \mathbf{R}^{n \times d} $
-
-
-$ \mathbf{h} \in \mathbf{R}^{n \times d} $
-
 are defined as
-
-$ \mathbf{h} $
-$ \mathbf{h} = \lbrace $
-$ \mathbf{h} = \lbrace \vec{h}_i $
-$ \mathbf{h} = \lbrace \vec{h}_i \mid  $
-$ \mathbf{h} = \lbrace \vec{h}_i \mid i=1,...,n $
 $ \mathbf{h} = \lbrace \vec{h}_i \mid i=1,...,n \rbrace $
-
-$ \mathbf{h} = \lbrace \vec{h}_i \mid i=1,...,n \rbrace $
-
 , where
-$\vec{h}_i \in \mathbf{R}^d $
-
-$\vec{h}_i \in \mathbf{R}^d $
-
-$ \vec{h}_i \in \mathbf{R}^d$
-
 $ \vec{h}_i \in \mathbf{R}^d $
-
-
 represents the feature vector of the node
 $ i $
 ,
@@ -97,9 +60,8 @@ denotes the number of nodes and
 $ d $
 denotes the dimension of the node feature vector. The edge features
 $ \mathbf{e} \in \mathbf{R}^{m \times c} $
-is defined as
-$ \{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}
-$
+are defined as
+$ \{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}$
 , where
 $ \vec{e}_{ij} \in \mathbf{R}^{c} $
 represent the feature vector of the edge
