@@ -35,7 +35,9 @@ GNN uses a form of neural message passing (MPNN) to learn graph-structured data.
 
 The edge convolution (Edge Conv) [^5] we use is an asymmetric edge function. It operates the edges connecting neighboring pairs of nodes. Specifically, it updates the target node features by Eq. [test][1]. The operation captures the hidden information from the target node feature $$\vec{h}_i$$ and also the neighborhood information, captured by $$\vec{h}_j-\vec{h}_i$$.
 
-<a name="headin"></a> $$\vec{h}_i' =\max_{j \in \mathcal N_i}\text{MLP}_{\theta}([\vec{h}_i,\vec{h}_j-\vec{h}_i])$$
+$$
+\vec{h}_i' =\max_{j \in \mathcal N_i}\text{MLP}_{\theta}([\vec{h}_i,\vec{h}_j-\vec{h}_i])
+$$
 
 The concatenated vector $$[\vec{h}_i,\vec{h}_j-\vec{h}_i]$$ is transformed by a Multilayer perceptron (MLP) and then aggregated by a max operation. 
 
