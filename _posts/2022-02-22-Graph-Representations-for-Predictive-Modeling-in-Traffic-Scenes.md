@@ -27,87 +27,44 @@ The remainder of this report is organized as follows: Section II introduces rele
 ## Graph Neural Networks
 
 Traffic scenarios can be represented effectively using graphs. A graph
-$G$
-is a data structure that consists of a set of nodes (or vertices)
-$V$
-and a set of edges
-$E$
-, i.e., 
-$G=(V,E)$
-.
-$e_{ij}=(v_i,v_j) \in E $
-denotes an edge pointing from
-$v_j$
-to
-$v_i$,
-where
-$v_i\in V$
-.
-$N(v) = \{u\in V \mid (v,u)\in E\}$
-denotes the neighborhood of a node
-$v$
-. The node features
-$ \mathbf{h} \in \mathbf{R}^{n \times d} $
-are defined as
-$$ \mathbf{h} = \lbrace \vec{h}_i \mid i=1,...,n \rbrace $$
-, where
-$$ \vec{h}_i \in \mathbf{R}^d $$
-represents the feature vector of the node
-$$ i $$
-,
-$$ n = \vert V \vert $$
-denotes the number of nodes and
-$$ d $$
-denotes the dimension of the node feature vector. The edge features
-$$ \mathbf{e} \in \mathbf{R}^{m \times c} $$
-are defined as
-$$ \{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}$$
-, where
-$$ \vec{e}_{ij} \in \mathbf{R}^{c} $$
-represent the feature vector of the edge
-$$ (i,j) $$
-,
-$$ m = \vert E \vert $$
-denotes the number of edges and
-$$ c $$
-denotes the dimension of the edge feature vector.
+$G$ is a data structure that consists of a set of nodes (or vertices) $V$ and a set of edges $E$, i.e., $G=(V,E)$. $e_{ij}=(v_i,v_j) \in E $ denotes an edge pointing from $v_j$ to $v_i$, where $v_i\in V$. $N(v) = \{u\in V \mid (v,u)\in E\}$ denotes the neighborhood of a node $v$. The node features $ \mathbf{h} \in \mathbf{R}^{n \times d} $ are defined as $$ \mathbf{h} = \lbrace \vec{h}_i \mid i=1,...,n \rbrace $$, where $$ \vec{h}_i \in \mathbf{R}^d $$ represents the feature vector of the node $$ i $$, $$ n = \vert V \vert $$ denotes the number of nodes and $$ d $$ denotes the dimension of the node feature vector. The edge features $$ \mathbf{e} \in \mathbf{R}^{m \times c} $$ are defined as $$ \{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}$$, where $$ \vec{e}_{ij} \in \mathbf{R}^{c} $$ represent the feature vector of the edge $$ (i,j) $$, $$ m = \vert E \vert $$ denotes the number of edges and $$ c $$ denotes the dimension of the edge feature vector.
 
-GNN uses a form of neural message passing (MPNN) to learn graph-structured data. MPNN treats graph convolutions as a message passing process in which vector messages can be passed from one node to another along edges directly. MPNN runs $L$ step message passing iterations to let messages propagate further[^4]. The message passing function at message passing step $l$ is defined as $\vec{h}^{l}_i = f_n(\vec{h}^{l-1}_i,m^{l}_i)$, where $m^{l}_i = \Phi(\{\vec{e}^{\,l}_{ij}\}_{j\in N(i)})$, $\vec{e}^{\,l}_{ij} = f_e(\vec{h}^{l-1}_i,\vec{h}^{l-1}_j,\vec{e}^{\, l-1}_{ij})$. $m^{l}_i$ represents the message of node $i$ at message passing step $l$, $\Phi$ denotes an aggregation operation, $f_n$ and $f_e$ are functions with learnable parameters. 
+GNN uses a form of neural message passing (MPNN) to learn graph-structured data. MPNN treats graph convolutions as a message passing process in which vector messages can be passed from one node to another along edges directly. MPNN runs $L$ step message passing iterations to let messages propagate further[^4]. The message passing function at message passing step $l$ is defined as $$\vec{h}^{l}_i = f_n(\vec{h}^{l-1}_i,m^{l}_i)$$, where $$m^{l}_i = \Phi(\{\vec{e}^{\,l}_{ij}\}_{j\in N(i)})$$, $$\vec{e}^{\,l}_{ij} = f_e(\vec{h}^{l-1}_i,\vec{h}^{l-1}_j,\vec{e}^{\, l-1}_{ij})$$. $$m^{l}_i$$ represents the message of node $i$ at message passing step $l$, $$\Phi$$ denotes an aggregation operation, $$f_n$$ and $$f_e$$ are functions with learnable parameters. 
 
 ## Edge Convolution
 
-The edge convolution (Edge Conv) [^5] we use is an asymmetric edge function. It operates the edges connecting neighboring pairs of nodes. Specifically, it updates the target node features by Eq. [test][1]. The operation captures the hidden information from the target node feature $\vec{h}_i$ and also the neighborhood information, captured by $\vec{h}_j-\vec{h}_i$.
+The edge convolution (Edge Conv) [^5] we use is an asymmetric edge function. It operates the edges connecting neighboring pairs of nodes. Specifically, it updates the target node features by Eq. [test][1]. The operation captures the hidden information from the target node feature $$\vec{h}_i$$ and also the neighborhood information, captured by $$\vec{h}_j-\vec{h}_i$$.
 
 <a name="headin"></a> $$\vec{h}_i' =\max_{j \in \mathcal N_i}\text{MLP}_{\theta}([\vec{h}_i,\vec{h}_j-\vec{h}_i])$$
 
-The concatenated vector $[\vec{h}_i,\vec{h}_j-\vec{h}_i]$ is transformed by a Multilayer perceptron (MLP) and then aggregated by a max operation. 
+The concatenated vector $$[\vec{h}_i,\vec{h}_j-\vec{h}_i]$$ is transformed by a Multilayer perceptron (MLP) and then aggregated by a max operation. 
 
 ## Edge-Featured Graph Attention Network
 
-Edge-Featured Graph Attention Networks (EGAT) [^6] are an extension of Graph Attention Neural Networks (GAT) [^7]. Compared to GATs, EGATs allow for implicitly assigning different importances to different neighbor nodes, considering not only node features but also edge features. They don't depend on knowing the entire graph structure upfront. Additionally, EGAT is computationally efficient. It does not require costly matrix operations. We use the node attention block of EGAT layer in our experiment. A node attention block of EGAT layer takes both node features $\mathbf{h}$ and edge features $\mathbf{e}$ as input and produces a new set of node features $\mathbf{h}'$ as output, where $\mathbf{h}'=\{\vec{h}_i' \mid i=1,...,n\}$.
+Edge-Featured Graph Attention Networks (EGAT) [^6] are an extension of Graph Attention Neural Networks (GAT) [^7]. Compared to GATs, EGATs allow for implicitly assigning different importances to different neighbor nodes, considering not only node features but also edge features. They don't depend on knowing the entire graph structure upfront. Additionally, EGAT is computationally efficient. It does not require costly matrix operations. We use the node attention block of EGAT layer in our experiment. A node attention block of EGAT layer takes both node features $$\mathbf{h}$$ and edge features $$\mathbf{e}$$ as input and produces a new set of node features $$\mathbf{h}'$$ as output, where $$\mathbf{h}'=\{\vec{h}_i' \mid i=1,...,n\}$$.
 
 ### Node and edge feature transformation
 
-First, the node features $\mathbf{h}$ and edge features $\mathbf{e}$ are transformed by a linear layer (Eq. 2, 3),
+First, the node features $$\mathbf{h}$$ and edge features $$\mathbf{e}$$ are transformed by a linear layer (Eq. 2, 3),
 
 $$\mathbf{h}^* = \mathbf{W}_{h}\cdot\mathbf{h}$$
 
 $$\mathbf{e}^* = \mathbf{W}_{e}\cdot\mathbf{e}$$
 
-where $\mathbf{h}^* $ and $\mathbf{e}^* $ are the projected node features and edge features respectively.
+where $$\mathbf{h}^* $$ and $$\mathbf{e}^* $$ are the projected node features and edge features respectively.
 
 ### Edge enhanced attention
 
-Given a target node $i$, the attention coefficient $\alpha_{i,j}$ is calculated by Eq. [\[c3\]](#c3){reference-type="ref" reference="c3"}, $\alpha_{i,j}$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features. $$\alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*} \Vert \vec{h}_j^{*} \Vert \vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i} \Vert \vec{h}^*_{j} \Vert \vec{e}^*_{ij}])} \label{c3}$$ Here, $\mathbf{a}$ is a linear layer and $N(i)$ is the neighbor nodes of node i in the graph. The node feature $\vec{h}^{'}_{i}$ is then updated by calculating a weighted sum of edge-integrated node features over its neighbor nodes, followed by a sigmoid function.
+Given a target node $i$, the attention coefficient $$\alpha_{i,j}$$ is calculated by Eq. [\[c3\]](#c3){reference-type="ref" reference="c3"}, $$\alpha_{i,j}$$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features. $$\alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*} \Vert \vec{h}_j^{*} \Vert \vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i} \Vert \vec{h}^*_{j} \Vert \vec{e}^*_{ij}])} \label{c3}$$ Here, $$\mathbf{a}$$ is a linear layer and $$N(i)$$ is the neighbor nodes of node i in the graph. The node feature $$\vec{h}^{'}_{i}$$ is then updated by calculating a weighted sum of edge-integrated node features over its neighbor nodes, followed by a sigmoid function.
 
 $$ \vec{h}'_{i}=\sigma\left(\sum_{j\in N(i)}\alpha_{ij}\mathbf{W}_h^\mathrm{T}[\vec{e}^*_{ij} \Vert \vec{h^*_{j}}]\right) $$
 
-\label{c4}$$
+\label{c4}
 
-Similar to GAT, we apply multi-head attention and run several independent attention mechanisms to get a stable self-attention mechanism output. Additionally, it allows the model to jointly attend to the information from different representation sub-spaces at different positions. The output of each attention head is concatenated as the final updated node feature $\vec{h}^{+}_{i}$.
+Similar to GAT, we apply multi-head attention and run several independent attention mechanisms to get a stable self-attention mechanism output. Additionally, it allows the model to jointly attend to the information from different representation sub-spaces at different positions. The output of each attention head is concatenated as the final updated node feature $$\vec{h}^{+}_{i}$$.
 
 $$\vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$
-Here, $K$ is the number of attention heads and $\mathop{\Vert}$ indicates the concatenation operation.
+Here, $K$ is the number of attention heads and $$\mathop{\Vert}$$ indicates the concatenation operation.
 
 # Methodology
 
@@ -118,13 +75,13 @@ Successful reconstruction of the important information of the agent environment 
 
 ## Graph extraction {#subsection:graph_extraction}
 
-The basis of our GNN training data is the highD dataset [^8], a dataset of vehicle trajectories on highways. We extract fully connected graphs from highD. In our training dataset, graph nodes represent traffic participants and edges represent the relationship between different traffic participants. For node $i$, the position $(x_i, y_i)$ acts as the node feature $\vec{h}_i $. The edge feature $\vec{e}_{ij}$ for the edge between node $i$ and node $j$ consists of the Euclidean distance $d_{ij}$ (Eq. [\[euclidean_distance\]](#euclidean_distance){reference-type="ref" reference="euclidean_distance"}), sine of the relative angle $\sin(\alpha_{ij})$ (Eq. [\[angle_sin\]](#angle_sin){reference-type="ref" reference="angle_sin"}) and cosine of the relative angle $\cos(\alpha_{ij})$ (Eq. [\[angle_cos\]](#angle_cos){reference-type="ref" reference="angle_cos"}).
+The basis of our GNN training data is the highD dataset [^8], a dataset of vehicle trajectories on highways. We extract fully connected graphs from highD. In our training dataset, graph nodes represent traffic participants and edges represent the relationship between different traffic participants. For node $i$, the position $$(x_i, y_i)$$ acts as the node feature $$\vec{h}_i $$. The edge feature $$\vec{e}_{ij}$$ for the edge between node $i$ and node $j$ consists of the Euclidean distance $$d_{ij}$$ (Eq. [\[euclidean_distance\]](#euclidean_distance){reference-type="ref" reference="euclidean_distance"}), sine of the relative angle $$\sin(\alpha_{ij})$$ (Eq. [\[angle_sin\]](#angle_sin){reference-type="ref" reference="angle_sin"}) and cosine of the relative angle $$\cos(\alpha_{ij})$$ (Eq. [\[angle_cos\]](#angle_cos){reference-type="ref" reference="angle_cos"}).
 
 $$\label{euclidean_distance}     d_{ij} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}$$
 $$\label{angle_sin}     \sin\alpha_{ij} = \frac{y_i-y_j}{d_{ij}}$$ 
 $$\label{angle_cos}     \cos\alpha_{ij} = \frac{x_i-x_j}{d_{ij}}$$
 
-Thus, our constructed graph consists of the node feature vector $\mathbf{h}$ (Eq. $12$) and the edge feature vector $\mathbf{e}$ (Eq. $13$).
+Thus, our constructed graph consists of the node feature vector $$\mathbf{h}$$ (Eq. $12$) and the edge feature vector $$\mathbf{e}$$ (Eq. $13$).
 
 $$ \vec{h}_i = [x_i, y_i] $$
 
@@ -136,17 +93,17 @@ $$ \mathbf{e} = \{\vec{e}_{ij} \mid i=1,...,N,j=1,...,N_i\} $$
 
 ## Maximum closeness
 
-We divide the area surrounding the ego agent into eight $45^{\circ}$ segments $\mathbf{R} = \{R_{i} \mid i=1,...,8\}$ as illustrated in Fig. [2](#Regions){reference-type="ref" reference="Regions"}, referred to as angular regions in the following. 
+We divide the area surrounding the ego agent into eight $$45^{\circ}$$ segments $$\mathbf{R} = \{R_{i} \mid i=1,...,8\}$$ as illustrated in Fig. [2](#Regions){reference-type="ref" reference="Regions"}, referred to as angular regions in the following. 
 
 ![Regions](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/regions.png "Fig. 2: Regions")
 
-We define closeness $c_{i,j} \in [0,1]$ (Eq. [\[closeness\]](#closeness){reference-type="ref" reference="closeness"}) as our proximity measure between the node $i$ (ego agent) and node $j$ (other traffic participants). Unlike the euclidean distance, closeness provides a smooth label and prevents discontinuities resulting from empty regions. $c_{i,j}$ is $0$ for all values greater than or equal to $D_{max}$ and $1$ if the euclidean distance $d_{i,j}$ is $0$. The maximum closeness of node $i$ in angular region $m$ is defined as ${c}^{+}_{i,m}$ (Eq. [\[closeness_angular_region\]](#closeness_angular_region){reference-type="ref" reference="closeness_angular_region"}). Our ground truth label, $\mathbf{c}^{+}$ (Eq. [\[closeness_ground_truth\]](#closeness_ground_truth){reference-type="ref" reference="closeness_ground_truth"}), is the vector of the maximum closenesses. 
+We define closeness $$c_{i,j} \in [0,1]$$ (Eq. [\[closeness\]](#closeness){reference-type="ref" reference="closeness"}) as our proximity measure between the node $i$ (ego agent) and node $j$ (other traffic participants). Unlike the euclidean distance, closeness provides a smooth label and prevents discontinuities resulting from empty regions. $$c_{i,j}$$ is $0$ for all values greater than or equal to $$D_{max}$$ and $1$ if the euclidean distance $$d_{i,j}$$ is $0$. The maximum closeness of node $i$ in angular region $m$ is defined as $${c}^{+}_{i,m}$$ (Eq. [\[closeness_angular_region\]](#closeness_angular_region){reference-type="ref" reference="closeness_angular_region"}). Our ground truth label, $$\mathbf{c}^{+}$$ (Eq. [\[closeness_ground_truth\]](#closeness_ground_truth){reference-type="ref" reference="closeness_ground_truth"}), is the vector of the maximum closenesses. 
 
 $$\label{closeness}     c_{i,j} = 1 - \frac{\min(d_{i,j},D_{max})}{D_{max}}$$ $$\label{closeness_angular_region}     c^{+}_{i,m} = \max_{j \in \mathcal{R}_m}\{c_{ij}\}$$ $$\label{closeness_ground_truth}     \mathbf{c}^{+} = \{c^{+}_{i,m} \mid i=1,...,N,m=1,...,8\}$$
 
 ## Model {#subsection:model}
 
-We describe our general pipeline in Fig.[3](#model){reference-type="ref" reference="model"} We construct a fully connected graph to represent the agent environment. Our model takes the fully connected graph, i.e., all node feature vectors $\mathbf{h}$ and edge feature vectors $\mathbf{e}$ as inputs and outputs the maximum closeness of each target node in the eight regions, i.e., $\mathbf{c}^{+}$. Additionally, we extract the output of the encoder which can be used as the input for reinforcement learning.
+We describe our general pipeline in Fig.[3](#model){reference-type="ref" reference="model"} We construct a fully connected graph to represent the agent environment. Our model takes the fully connected graph, i.e., all node feature vectors $$\mathbf{h}$$ and edge feature vectors $$\mathbf{e}$$ as inputs and outputs the maximum closeness of each target node in the eight regions, i.e., $$\mathbf{c}^{+}$$. Additionally, we extract the output of the encoder which can be used as the input for reinforcement learning.
 
 ![Model architecture](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/model-architecture.png "Fig. 3: Model architecture")
 
@@ -156,13 +113,13 @@ We divide this maximum closeness reconstruction task into a binary classificatio
 
 ### Encoding graph information
 
-Each node attribute has two features: $x_i$ and $y_i$ position. Each edge attribute has three features: relative distance $d_{ij}$, sine of relative angle $\sin(\alpha_{ij})$ and cosine of relative angle $\cos(\alpha_{ij})$. Thus the node input and edge input has shape $(n,2)$ and $(m,3)$ respectively, where $n$ is the number of nodes and $m$ is the number of edges.
+Each node attribute has two features: $$x_i$$ and $$y_i$$ position. Each edge attribute has three features: relative distance $$d_{ij}$$, sine of relative angle $$\sin(\alpha_{ij})$$ and cosine of relative angle $$\cos(\alpha_{ij})$$. Thus the node input and edge input has shape $$(n,2)$$ and $$(m,3)$$ respectively, where $$n$$ is the number of nodes and $m$ is the number of edges.
 
-We use a linear layer followed by two Edge Conv layers to process node input and obtain a $(n,128)$ tensor: $E_{node}$. Similarly, we use a linear layer to process edge input and get a $(m,64)$ tensor: $E_{edge}$.
+We use a linear layer followed by two Edge Conv layers to process node input and obtain a $$(n,128)$$ tensor: $$E_{node}$$. Similarly, we use a linear layer to process edge input and get a $$(m,64)$$ tensor: $$E_{edge}$$.
 
 ### Extracting encoder output
 
-We use two node attention blocks of EGAT to aggregate $E_{node}$ and $E_{edge}$ for the classifier and regressor separately, so to obtain a $(n,128)$ tensor: $E_{cls}$ and a $(n,128)$ tensor: $E_{reg}$. The encoder output $E_{encoder}$ is defined as the concatenation of $E_{cls}$ and $E_{reg}$.
+We use two node attention blocks of EGAT to aggregate $$E_{node}$$ and $$E_{edge}$$ for the classifier and regressor separately, so to obtain a $$(n,128)$$ tensor: $$E_{cls}$$ and a $$(n,128)$$ tensor: $$E_{reg}$$. The encoder output $$E_{encoder}$$ is defined as the concatenation of $$E_{cls}$$ and $$E_{reg}$$.
 
 ### Decoding graph information
 
@@ -170,7 +127,7 @@ We use two linear layers as the classification decoder and regression decoder. T
 
 ### Loss function
 
-This model is trained with a classification loss $\mathcal{L}_{cls}$ and a regression loss $\mathcal{L}_{reg}$. The total loss is calculated in Eq. [\[loss\]](#loss){reference-type="ref" reference="loss"}, where the design parameter $\beta$ allows to balance the weight of the regression loss in relation to the classification loss. $$\label{loss}     \mathcal{L}=\beta\mathcal{L}_{reg} + \mathcal{L}_{cls}$$
+This model is trained with a classification loss $$\mathcal{L}_{cls}$$ and a regression loss $$\mathcal{L}_{reg}$$. The total loss is calculated in Eq. [\[loss\]](#loss){reference-type="ref" reference="loss"}, where the design parameter $$\beta$$ allows to balance the weight of the regression loss in relation to the classification loss. $$\label{loss}     \mathcal{L}=\beta\mathcal{L}_{reg} + \mathcal{L}_{cls}$$
 
 # Implementation
 
@@ -188,13 +145,13 @@ Our package *traffic_scene_representation* is split into three subpackages: extr
 
 ## Training details
 
-We use our constructed PyTorch Geometric graph dataset in our experiment. It contains $80000$ training samples, $10000$ validation samples and $10000$ test samples. We train our models for $50$ epochs with batch size $64$, using the Adam optimizer initialized with a learning rate of $0.001$ and exponential decay rate of $0.9$. All Edge Conv layers and EGAT layers are followed by BatchNormalization and ReLU activation. All linear layers except the last linear layer in both decoders are followed with ReLU activation. The classification loss $\mathcal{L}_{cls}$ is binary cross-entropy loss and the regression loss $\mathcal{L}_{reg}$ is Huber loss. We set the hyperparameter $\beta$ in loss function to $100$.
+We use our constructed PyTorch Geometric graph dataset in our experiment. It contains $80000$ training samples, $10000$ validation samples and $10000$ test samples. We train our models for $50$ epochs with batch size $64$, using the Adam optimizer initialized with a learning rate of $0.001$ and exponential decay rate of $0.9$. All Edge Conv layers and EGAT layers are followed by BatchNormalization and ReLU activation. All linear layers except the last linear layer in both decoders are followed with ReLU activation. The classification loss $$\mathcal{L}_{cls}$$ is binary cross-entropy loss and the regression loss $$\mathcal{L}_{reg}$$ is Huber loss. We set the hyperparameter $$\beta$$ in loss function to $100$.
 
 ![Converged losses of the model by using different encoder output dimensions](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/loss-plot.png "Fig. 5: Converged losses of the model by using different encoder output dimensions")
 
 ## Reconstruction performance by using different encoder dimensions
 
-We set up experiments for testing the performance of model using different encoder dimensions. We set the feature dimension of $E_{cls}$ and $E_{reg}$ to $8, 16, 32, 64, 128$ in five experiments respectively, simultaneously, modify the input dimension of the following linear layer to the same dimension and keep other hyperparameters unchanged. The converged loss of each encoder dimension is illustrated in Fig. [4](#converged loss){reference-type="ref" reference="converged loss"}. We can see that models with higher number of dimensions in the encoder output archive a lower converged loss than models with few dimensions.
+We set up experiments for testing the performance of model using different encoder dimensions. We set the feature dimension of $$E_{cls}$$ and $$E_{reg}$$ to $$8, 16, 32, 64, 128$$ in five experiments respectively, simultaneously, modify the input dimension of the following linear layer to the same dimension and keep other hyperparameters unchanged. The converged loss of each encoder dimension is illustrated in Fig. [4](#converged loss){reference-type="ref" reference="converged loss"}. We can see that models with higher number of dimensions in the encoder output archive a lower converged loss than models with few dimensions.
 
 Additionally, we observe that even using an encoder dimension of $8$, the model still performs very well. It indicates that we can use a low-dimensional encoder output to represent the agent environment and that we can use it as the input for reinforcement learning agents.
 
@@ -206,7 +163,7 @@ Fig. [5](#scenario-explanation){reference-type="ref" reference="scenario-explana
 
 To understand our learned representations better, we perform Principal Component Analysis (PCA) on the encoder output of the entire test dataset. Using PCA we can identify clusters in the learned representations. PCA derives a low-dimensional feature set from a higher-dimensional feature set while striving to preserve as much information (i.e. variance) as possible.
 
-We show the results of $2$D PCA decomposition with point density heatmap and $3$D PCA decomposition in Fig.[\[pca-2D\]](#pca-2D){reference-type="ref" reference="pca-2D"} and Fig.[\[pca-3D\]](#pca-3D){reference-type="ref" reference="pca-3D"} respectively. The variance ratio of the three principal components are $15.17\%$, $13.69\%$ and $8.37\%$ respectively. Both $2$D PCA and $3$D PCA show clear clustering.
+We show the results of $2$D PCA decomposition with point density heatmap and $3$D PCA decomposition in Fig.[\[pca-2D\]](#pca-2D){reference-type="ref" reference="pca-2D"} and Fig.[\[pca-3D\]](#pca-3D){reference-type="ref" reference="pca-3D"} respectively. The variance ratio of the three principal components are $$15.17\%$$, $$13.69\%$$ and $$8.37\%$$ respectively. Both $2$D PCA and $3$D PCA show clear clustering.
 
 ![PCA](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca.png)
 
