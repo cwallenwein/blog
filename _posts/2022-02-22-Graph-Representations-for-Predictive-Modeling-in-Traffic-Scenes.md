@@ -57,15 +57,18 @@ where $$\mathbf{h}^* $$ and $$\mathbf{e}^* $$ are the projected node features an
 
 ### Edge enhanced attention
 
-Given a target node $i$, the attention coefficient $$\alpha_{i,j}$$ is calculated by Eq. [\[c3\]](#c3){reference-type="ref" reference="c3"}, $$\alpha_{i,j}$$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features. $$\alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*} \Vert \vec{h}_j^{*} \Vert \vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i} \Vert \vec{h}^*_{j} \Vert \vec{e}^*_{ij}])} \label{c3}$$ Here, $$\mathbf{a}$$ is a linear layer and $$N(i)$$ is the neighbor nodes of node i in the graph. The node feature $$\vec{h}^{'}_{i}$$ is then updated by calculating a weighted sum of edge-integrated node features over its neighbor nodes, followed by a sigmoid function.
+Given a target node $i$, the attention coefficient $$\alpha_{i,j}$$ is calculated by Eq. [\[c3\]](#c3){reference-type="ref" reference="c3"}, $$\alpha_{i,j}$$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features.
+
+$$\alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*} \Vert \vec{h}_j^{*} \Vert \vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i} \Vert \vec{h}^*_{j} \Vert \vec{e}^*_{ij}])}$$
+
+Here, $$\mathbf{a}$$ is a linear layer and $$N(i)$$ is the neighbor nodes of node i in the graph. The node feature $$\vec{h}^{'}_{i}$$ is then updated by calculating a weighted sum of edge-integrated node features over its neighbor nodes, followed by a sigmoid function.
 
 $$ \vec{h}'_{i}=\sigma\left(\sum_{j\in N(i)}\alpha_{ij}\mathbf{W}_h^\mathrm{T}[\vec{e}^*_{ij} \Vert \vec{h^*_{j}}]\right) $$
-
-\label{c4}
 
 Similar to GAT, we apply multi-head attention and run several independent attention mechanisms to get a stable self-attention mechanism output. Additionally, it allows the model to jointly attend to the information from different representation sub-spaces at different positions. The output of each attention head is concatenated as the final updated node feature $$\vec{h}^{+}_{i}$$.
 
 $$\vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$
+
 Here, $K$ is the number of attention heads and $$\mathop{\Vert}$$ indicates the concatenation operation.
 
 # Methodology
@@ -79,9 +82,9 @@ Successful reconstruction of the important information of the agent environment 
 
 The basis of our GNN training data is the highD dataset [^8], a dataset of vehicle trajectories on highways. We extract fully connected graphs from highD. In our training dataset, graph nodes represent traffic participants and edges represent the relationship between different traffic participants. For node $i$, the position $$(x_i, y_i)$$ acts as the node feature $$\vec{h}_i $$. The edge feature $$\vec{e}_{ij}$$ for the edge between node $i$ and node $j$ consists of the Euclidean distance $$d_{ij}$$ (Eq. [\[euclidean_distance\]](#euclidean_distance){reference-type="ref" reference="euclidean_distance"}), sine of the relative angle $$\sin(\alpha_{ij})$$ (Eq. [\[angle_sin\]](#angle_sin){reference-type="ref" reference="angle_sin"}) and cosine of the relative angle $$\cos(\alpha_{ij})$$ (Eq. [\[angle_cos\]](#angle_cos){reference-type="ref" reference="angle_cos"}).
 
-$$\label{euclidean_distance}     d_{ij} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}$$
-$$\label{angle_sin}     \sin\alpha_{ij} = \frac{y_i-y_j}{d_{ij}}$$ 
-$$\label{angle_cos}     \cos\alpha_{ij} = \frac{x_i-x_j}{d_{ij}}$$
+$$d_{ij} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}$$
+$$\sin\alpha_{ij} = \frac{y_i-y_j}{d_{ij}}$$ 
+$$\cos\alpha_{ij} = \frac{x_i-x_j}{d_{ij}}$$
 
 Thus, our constructed graph consists of the node feature vector $$\mathbf{h}$$ (Eq. $12$) and the edge feature vector $$\mathbf{e}$$ (Eq. $13$).
 
@@ -101,7 +104,11 @@ We divide the area surrounding the ego agent into eight $$45^{\circ}$$ segments 
 
 We define closeness $$c_{i,j} \in [0,1]$$ (Eq. [\[closeness\]](#closeness){reference-type="ref" reference="closeness"}) as our proximity measure between the node $i$ (ego agent) and node $j$ (other traffic participants). Unlike the euclidean distance, closeness provides a smooth label and prevents discontinuities resulting from empty regions. $$c_{i,j}$$ is $0$ for all values greater than or equal to $$D_{max}$$ and $1$ if the euclidean distance $$d_{i,j}$$ is $0$. The maximum closeness of node $i$ in angular region $m$ is defined as $${c}^{+}_{i,m}$$ (Eq. [\[closeness_angular_region\]](#closeness_angular_region){reference-type="ref" reference="closeness_angular_region"}). Our ground truth label, $$\mathbf{c}^{+}$$ (Eq. [\[closeness_ground_truth\]](#closeness_ground_truth){reference-type="ref" reference="closeness_ground_truth"}), is the vector of the maximum closenesses. 
 
-$$\label{closeness}     c_{i,j} = 1 - \frac{\min(d_{i,j},D_{max})}{D_{max}}$$ $$\label{closeness_angular_region}     c^{+}_{i,m} = \max_{j \in \mathcal{R}_m}\{c_{ij}\}$$ $$\label{closeness_ground_truth}     \mathbf{c}^{+} = \{c^{+}_{i,m} \mid i=1,...,N,m=1,...,8\}$$
+$$c_{i,j} = 1 - \frac{\min(d_{i,j},D_{max})}{D_{max}}$$
+
+$$c^{+}_{i,m} = \max_{j \in \mathcal{R}_m}\{c_{ij}\}$$
+
+$$\mathbf{c}^{+} = \{c^{+}_{i,m} \mid i=1,...,N,m=1,...,8\}$$
 
 ## Model {#subsection:model}
 
@@ -129,7 +136,9 @@ We use two linear layers as the classification decoder and regression decoder. T
 
 ### Loss function
 
-This model is trained with a classification loss $$\mathcal{L}_{cls}$$ and a regression loss $$\mathcal{L}_{reg}$$. The total loss is calculated in Eq. [\[loss\]](#loss){reference-type="ref" reference="loss"}, where the design parameter $$\beta$$ allows to balance the weight of the regression loss in relation to the classification loss. $$\label{loss}     \mathcal{L}=\beta\mathcal{L}_{reg} + \mathcal{L}_{cls}$$
+This model is trained with a classification loss $$\mathcal{L}_{cls}$$ and a regression loss $$\mathcal{L}_{reg}$$. The total loss is calculated in Eq. [\[loss\]](#loss){reference-type="ref" reference="loss"}, where the design parameter $$\beta$$ allows to balance the weight of the regression loss in relation to the classification loss.
+
+$$\mathcal{L}=\beta\mathcal{L}_{reg} + \mathcal{L}_{cls}$$
 
 # Implementation
 
