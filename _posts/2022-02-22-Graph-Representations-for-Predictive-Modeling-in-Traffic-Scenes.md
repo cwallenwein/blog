@@ -51,25 +51,25 @@ $ \mathbf{h} \in \mathbf{R}^{n \times d} $
 are defined as
 $$ \mathbf{h} = \lbrace \vec{h}_i \mid i=1,...,n \rbrace $$
 , where
-$ \vec{h}_i \in \mathbf{R}^d $
+$$ \vec{h}_i \in \mathbf{R}^d $$
 represents the feature vector of the node
-$ i $
+$$ i $$
 ,
-$ n = \vert V \vert $
+$$ n = \vert V \vert $$
 denotes the number of nodes and
-$ d $
+$$ d $$
 denotes the dimension of the node feature vector. The edge features
-$ \mathbf{e} \in \mathbf{R}^{m \times c} $
+$$ \mathbf{e} \in \mathbf{R}^{m \times c} $$
 are defined as
-$ \{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}$
+$$ \{\vec{e}_{ij} \mid i=1,...,n,j=1,...,N(i)\}$$
 , where
-$ \vec{e}_{ij} \in \mathbf{R}^{c} $
+$$ \vec{e}_{ij} \in \mathbf{R}^{c} $$
 represent the feature vector of the edge
-$ (i,j) $
+$$ (i,j) $$
 ,
-$ m = \vert E \vert $
+$$ m = \vert E \vert $$
 denotes the number of edges and
-$ c $
+$$ c $$
 denotes the dimension of the edge feature vector.
 
 GNN uses a form of neural message passing (MPNN) to learn graph-structured data. MPNN treats graph convolutions as a message passing process in which vector messages can be passed from one node to another along edges directly. MPNN runs $L$ step message passing iterations to let messages propagate further[^4]. The message passing function at message passing step $l$ is defined as $\vec{h}^{l}_i = f_n(\vec{h}^{l-1}_i,m^{l}_i)$, where $m^{l}_i = \Phi(\{\vec{e}^{\,l}_{ij}\}_{j\in N(i)})$, $\vec{e}^{\,l}_{ij} = f_e(\vec{h}^{l-1}_i,\vec{h}^{l-1}_j,\vec{e}^{\, l-1}_{ij})$. $m^{l}_i$ represents the message of node $i$ at message passing step $l$, $\Phi$ denotes an aggregation operation, $f_n$ and $f_e$ are functions with learnable parameters. 
