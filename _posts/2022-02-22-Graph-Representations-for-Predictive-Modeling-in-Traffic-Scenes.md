@@ -49,7 +49,7 @@ Edge-Featured Graph Attention Networks (EGAT) [^6] are an extension of Graph Att
 
 First, the node features $$\mathbf{h}$$ and edge features $$\mathbf{e}$$ are transformed by a linear layer (Eq. 2, 3),
 
-$$ \begin{align}\mathbf{h}^* = \mathbf{W}_{h}\cdot\mathbf{h} \end{align} $$
+$$ \mathbf{h}^* = \mathbf{W}_{h}\cdot\mathbf{h} \text{Eq. X} $$
 
 $$\mathbf{e}^* = \mathbf{W}_{e}\cdot\mathbf{e}$$
 
