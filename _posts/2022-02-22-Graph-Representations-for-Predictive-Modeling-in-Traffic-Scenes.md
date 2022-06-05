@@ -8,7 +8,7 @@ toc: false
 hide: false
 ---
 
-# Abstract
+# Abstract 
 Some deep reinforcement learning models are difficult to use in autonomous driving, as they require too much training time to learn useful and general control policies. This problem can be largely alleviated if the reinforcement learning agent has a meaningful representation of its surrounding environment. Representation learning is a set of techniques to achieve this goal. In this work, we develop a novel graph neural network and train it to reconstruct important information of the surrounding environment from the perspective of the ego agent. We further extract an encoded hidden state from the model which can be used as a meaningful representation of the surrounding environment for reinforcement learning agents.
 
 # Introduction
@@ -67,7 +67,7 @@ $$ \vec{h}'_{i}=\sigma\left(\sum_{j\in N(i)}\alpha_{ij}\mathbf{W}_h^\mathrm{T}[\
 
 Similar to GAT, we apply multi-head attention and run several independent attention mechanisms to get a stable self-attention mechanism output. Additionally, it allows the model to jointly attend to the information from different representation sub-spaces at different positions. The output of each attention head is concatenated as the final updated node feature $$\vec{h}^{+}_{i}$$.
 
-$$\vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$
+$$\vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$ {#equation:test1}
 
 Here, $K$ is the number of attention heads and $$\mathop{\Vert}$$ indicates the concatenation operation.
 
