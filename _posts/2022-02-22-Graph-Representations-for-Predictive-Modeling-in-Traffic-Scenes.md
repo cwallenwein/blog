@@ -191,6 +191,7 @@ We can conclude, that clusters in the learned representations correspond to actu
 | ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-1.png "(a)")  |  ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-2.png "(b)")  |
 | ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-3.png "(c)") | ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-4.png "(d)") |
 
+![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/divider.png "Fig. 9")
 
 # Conclusion
 
