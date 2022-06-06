@@ -33,7 +33,7 @@ GNN uses a form of neural message passing (MPNN) to learn graph-structured data.
 
 ## Edge Convolution
 
-The edge convolution (Edge Conv) [^5] we use is an asymmetric edge function. It operates the edges connecting neighboring pairs of nodes. Specifically, it updates the target node features by Eq. [test][1]. The operation captures the hidden information from the target node feature $$\vec{h}_i$$ and also the neighborhood information, captured by $$\vec{h}_j-\vec{h}_i$$.
+The edge convolution (Edge Conv) [^5] we use is an asymmetric edge function. It operates the edges connecting neighboring pairs of nodes. Specifically, it updates the target node features by Eq. 1. The operation captures the hidden information from the target node feature $$\vec{h}_i$$ and also the neighborhood information, captured by $$\vec{h}_j-\vec{h}_i$$.
 
 $$ \text{Eq. 1:}\quad \vec{h}_i' =\max_{j \in \mathcal N_i}\text{MLP}_{\theta}([\vec{h}_i,\vec{h}_j-\vec{h}_i]) $$
 
@@ -55,7 +55,7 @@ where $$\mathbf{h}^* $$ and $$\mathbf{e}^* $$ are the projected node features an
 
 ### Edge enhanced attention
 
-Given a target node $i$, the attention coefficient $$\alpha_{i,j}$$ is calculated by Eq. [\[c3\]](#c3), $$\alpha_{i,j}$$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features.
+Given a target node $i$, the attention coefficient $$\alpha_{i,j}$$ is calculated by Eq. 4, $$\alpha_{i,j}$$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features.
 
 $$ \text{Eq. 4:}\quad \alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*} \Vert \vec{h}_j^{*} \Vert \vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i} \Vert \vec{h}^*_{j} \Vert \vec{e}^*_{ij}])}$$
 
@@ -79,10 +79,12 @@ Successful reconstruction of the important information of the agent environment 
 
 ## Graph extraction {#subsection:graph_extraction}
 
-The basis of our GNN training data is the highD dataset [^8], a dataset of vehicle trajectories on highways. We extract fully connected graphs from highD. In our training dataset, graph nodes represent traffic participants and edges represent the relationship between different traffic participants. For node $i$, the position $$(x_i, y_i)$$ acts as the node feature $$\vec{h}_i $$. The edge feature $$\vec{e}_{ij}$$ for the edge between node $i$ and node $j$ consists of the Euclidean distance $$d_{ij}$$ (Eq. [\[euclidean_distance\]](#euclidean_distance), sine of the relative angle $$\sin(\alpha_{ij})$$ (Eq. [\[angle_sin\]](#angle_sin) and cosine of the relative angle $$\cos(\alpha_{ij})$$ (Eq. [\[angle_cos\]](#angle_cos)).
+The basis of our GNN training data is the highD dataset [^8], a dataset of vehicle trajectories on highways. We extract fully connected graphs from highD. In our training dataset, graph nodes represent traffic participants and edges represent the relationship between different traffic participants. For node $i$, the position $$(x_i, y_i)$$ acts as the node feature $$\vec{h}_i $$. The edge feature $$\vec{e}_{ij}$$ for the edge between node $i$ and node $j$ consists of the Euclidean distance $$d_{ij}$$ (Eq. 7), sine of the relative angle $$\sin(\alpha_{ij})$$ (Eq. 8) and cosine of the relative angle $$\cos(\alpha_{ij})$$ (Eq. 9).
 
 $$ \text{Eq. 7:}\quad d_{ij} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}$$
+
 $$ \text{Eq. 8:}\quad \sin\alpha_{ij} = \frac{y_i-y_j}{d_{ij}}$$ 
+
 $$ \text{Eq. 9:}\quad \cos\alpha_{ij} = \frac{x_i-x_j}{d_{ij}}$$
 
 Thus, our constructed graph consists of the node feature vector $$\mathbf{h}$$ (Eq. $12$) and the edge feature vector $$\mathbf{e}$$ (Eq. $13$).
@@ -101,7 +103,7 @@ We divide the area surrounding the ego agent into eight $$45^{\circ}$$ segments 
 
 ![Regions](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/regions.png "Fig. 2: Regions")
 
-We define closeness $$c_{i,j} \in [0,1]$$ (Eq. [\[closeness\]](#closeness)) as our proximity measure between the node $i$ (ego agent) and node $j$ (other traffic participants). Unlike the euclidean distance, closeness provides a smooth label and prevents discontinuities resulting from empty regions. $$c_{i,j}$$ is $0$ for all values greater than or equal to $$D_{max}$$ and $1$ if the euclidean distance $$d_{i,j}$$ is $0$. The maximum closeness of node $i$ in angular region $m$ is defined as $${c}^{+}_{i,m}$$ (Eq. [\[closeness_angular_region\]](#closeness_angular_region)). Our ground truth label, $$\mathbf{c}^{+}$$ (Eq. [\[closeness_ground_truth\]](#closeness_ground_truth)), is the vector of the maximum closenesses. 
+We define closeness $$c_{i,j} \in [0,1]$$ (Eq. 14) as our proximity measure between the node $i$ (ego agent) and node $j$ (other traffic participants). Unlike the euclidean distance, closeness provides a smooth label and prevents discontinuities resulting from empty regions. $$c_{i,j}$$ is $0$ for all values greater than or equal to $$D_{max}$$ and $1$ if the euclidean distance $$d_{i,j}$$ is $0$. The maximum closeness of node $i$ in angular region $m$ is defined as $${c}^{+}_{i,m}$$ (Eq. 15). Our ground truth label, $$\mathbf{c}^{+}$$ (Eq. 16), is the vector of the maximum closenesses. 
 
 $$ \text{Eq. 14:}\quad c_{i,j} = 1 - \frac{\min(d_{i,j},D_{max})}{D_{max}}$$
 
@@ -135,7 +137,7 @@ We use two linear layers as the classification decoder and regression decoder. T
 
 ### Loss function
 
-This model is trained with a classification loss $$\mathcal{L}_{cls}$$ and a regression loss $$\mathcal{L}_{reg}$$. The total loss is calculated in Eq. [\[loss\]](#loss), where the design parameter $$\beta$$ allows to balance the weight of the regression loss in relation to the classification loss.
+This model is trained with a classification loss $$\mathcal{L}_{cls}$$ and a regression loss $$\mathcal{L}_{reg}$$. The total loss is calculated in Eq. 17, where the design parameter $$\beta$$ allows to balance the weight of the regression loss in relation to the classification loss.
 
 $$ \text{Eq. 17:}\quad \mathcal{L}=\beta\mathcal{L}_{reg} + \mathcal{L}_{cls}$$
 
