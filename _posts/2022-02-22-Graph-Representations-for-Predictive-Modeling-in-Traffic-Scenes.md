@@ -149,7 +149,7 @@ Our implementation uses the CommonRoad-Geometric package developed at the chair 
 
 ![Model implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-model.png)
 
-![Visualization implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png "Fig. 4. Class diagram of our implementation, bundled in the Python package *traffic_ scene_representation* and its most important dependencies. (a) The *extraction* subpackage. (b) The *model* subpackage (c) The *visualization* subpackage.")
+![Visualization implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png "Fig. 4. Class diagram of our implementation, bundled in the Python package traffic_ scene_representation and its most important dependencies. (a) The extraction subpackage. (b) The model subpackage (c) The visualization subpackage.")
 
 Our package *traffic_scene_representation* is split into three subpackages: extraction, model and visualization (see Fig. [\[implementation\]](#implementation)). The extraction package contains two classes: *extractor* which extends the *CommonRoad Geometric* class *StandardTrafficExtractor* and *collector* which extends the *CommonRoad Geometric* class *BaseDatasetCollector*. *extractor* is responsible for extracting one PyTorch Geometric graph data object from a single scenario and timestep as described in Subsection [3.1](#subsection:graph_extraction). The class *collector* is responsible for collecting the entire training and test dataset from the highD dataset and saving the files to the disk. Furthermore, we built a GNN model as described in [3.3](#subsection:model) using PyTorch Geometric. For building the GNN model, we implement three neural network layers, namely the classes *EGATConvs*, *EdgeConv* and *MLP*. The entire model is implemented in the class *TrafficRepresentationNet*. Additionally, we provide the tools to perform PCA decomposition on all encoder outputs. We also provide a simple set of visualization scripts, combined in the subpackage *visualization*, that can render the different traffic participants, the lanes and the prediction results. It can also visualize the PCA decomposition heatmap. This is useful for debugging and showcasing purposes. It is written using the Python libraries Pillow, a popular Python library for image manipulation and matplotlib, a commonly use plotting library.
 
@@ -187,9 +187,14 @@ We can conclude, that clusters in the learned representations correspond to actu
 
 ![image](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca-points.png)
 
-![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-1.png)
+Test             |  Test
+:-------------------------:|:-------------------------:
+![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-1.png)  |  ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-2.png)
 
-![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-2.png)
+
+
+
+
 
 ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-3.png)
 
