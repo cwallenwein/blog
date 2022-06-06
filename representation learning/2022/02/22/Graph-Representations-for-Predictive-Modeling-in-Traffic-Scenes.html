@@ -504,11 +504,21 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
 
 <p>Our implementation uses the CommonRoad-Geometric package developed at the chair of Robotics, Artificial Intelligence and Embedded Systems at the Technical University of Munich (TUM). CommonRoad-Geometric is a geometric deep learning library for autonomous driving that we use to extract graph data from traffic scenarios. It is built on top of PyTorch Geometric <sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">9</a></sup> and the CommonRoad framework <sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">10</a></sup>. CommonRoad is a collection of benchmarks for autonomous driving that enable reproducibility and PyTorch Geometric is a popular PyTorch <sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">11</a></sup> based library for deep learning on graphs. As explained in Subsection <a href="#subsection:graph_extraction">3.1</a>, we use highD as the basis of our training data.</p>
 
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-extraction.png" alt="Extraction implementation" /></p>
+<table>
+  <tbody>
+    <tr>
+      <td><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-extraction.png" alt="Extraction implementation" title="(a)" /></td>
+    </tr>
+    <tr>
+      <td><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-model.png" alt="Model implementation" title="(b)" /></td>
+    </tr>
+    <tr>
+      <td><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png" alt="Visualization implementation" title="(c)" /></td>
+    </tr>
+  </tbody>
+</table>
 
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-model.png" alt="Model implementation" /></p>
-
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png" alt="Visualization implementation" title="Fig. 4. Class diagram of our implementation, bundled in the Python package traffic_ scene_representation and its most important dependencies. (a) The extraction subpackage. (b) The model subpackage (c) The visualization subpackage." /></p>
+<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/divider.png" alt="" title="Fig. 4. Class diagram of our implementation, bundled in the Python package traffic_ scene_representation and its most important dependencies. (a) The extraction subpackage. (b) The model subpackage (c) The visualization subpackage." /></p>
 
 <p>Our package <em>traffic_scene_representation</em> is split into three subpackages: extraction, model and visualization (see Fig. <a href="#implementation">[implementation]</a>). The extraction package contains two classes: <em>extractor</em> which extends the <em>CommonRoad Geometric</em> class <em>StandardTrafficExtractor</em> and <em>collector</em> which extends the <em>CommonRoad Geometric</em> class <em>BaseDatasetCollector</em>. <em>extractor</em> is responsible for extracting one PyTorch Geometric graph data object from a single scenario and timestep as described in Subsection <a href="#subsection:graph_extraction">3.1</a>. The class <em>collector</em> is responsible for collecting the entire training and test dataset from the highD dataset and saving the files to the disk. Furthermore, we built a GNN model as described in <a href="#subsection:model">3.3</a> using PyTorch Geometric. For building the GNN model, we implement three neural network layers, namely the classes <em>EGATConvs</em>, <em>EdgeConv</em> and <em>MLP</em>. The entire model is implemented in the class <em>TrafficRepresentationNet</em>. Additionally, we provide the tools to perform PCA decomposition on all encoder outputs. We also provide a simple set of visualization scripts, combined in the subpackage <em>visualization</em>, that can render the different traffic participants, the lanes and the prediction results. It can also visualize the PCA decomposition heatmap. This is useful for debugging and showcasing purposes. It is written using the Python libraries Pillow, a popular Python library for image manipulation and matplotlib, a commonly use plotting library.</p>
 
@@ -536,9 +546,14 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
 
 <p>We show the results of $2D$ PCA decomposition with point density heatmap and 3D PCA decomposition in Fig.<a href="#pca-2D">[pca-2D]</a> and Fig.<a href="#pca-3D">[pca-3D]</a> respectively. The variance ratio of the three principal components are $15.17\%$, $13.69\%$ and $8.37\%$ respectively. Both 2D PCA and 3D PCA show clear clustering.</p>
 
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca.png" alt="PCA" /></p>
-
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca-3d.png" alt="3D PCA" /></p>
+<table>
+  <tbody>
+    <tr>
+      <td><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca.png" alt="PCA" title="Fig. 7(a). 2D PCA heatmap of the encoder output of the entire test dataset. The axes correspond to the first and second principal components. The colors indicate point density with dark purple showing a low point density and yellow a high point density." /></td>
+      <td><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca-3d.png" alt="3D PCA" title="Fig. 7(b). 3D PCA decomposition of the encoder output of the entire test dataset. The axes correspond to the first, second and third principal components." /></td>
+    </tr>
+  </tbody>
+</table>
 
 <p>We interpret the PCA results by visualizing traffic scenes at important points of the 2D PCA heatmap. The most common cluster in the 2D PCA heatmap is the cluster around the black dot in Fig. 8, corresponding to the scenario in Fig. <a href="#scenario:2">[scenario:2]</a> in which there are close traffic participants around the ego agent. The cluster around the green dot in Fig. 8 is the second most common cluster in the 2D PCA heatmap. This cluster corresponds to scenarios like Fig. <a href="#scenario:1">[scenario:1]</a> in which there are fewer close traffic participants around ego agent compared to the main cluster. In addition, we observed that clusters in the heatmap with lower point density correspond to scenarios in which, either there are only a few close traffic participants in front of the ego agent, or behind of the ego agent. One example is illustrated in Fig. <a href="#scenario:4">[scenario:4]</a>, which corresponds to the red dot in Fig. 8.</p>
 
@@ -559,7 +574,7 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
   </tbody>
 </table>
 
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/divider.png" alt="" title="Fig. 9" /></p>
+<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/divider.png" alt="" title="Fig. 9. Visualization of traffic scenes and the reconstructed maximum closeness for all angular regions. Fig. 9(a) corresponds to the green dot in Fig. 8, Fig. 9(b) to the black dot, Fig. 9(c) to the blue dot and Fig. 9(d) to the red dot in Fig. 8." /></p>
 
 <h1 id="conclusion">Conclusion</h1>
 
