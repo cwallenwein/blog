@@ -35,9 +35,7 @@ GNN uses a form of neural message passing (MPNN) to learn graph-structured data.
 
 The edge convolution (Edge Conv) [^5] we use is an asymmetric edge function. It operates the edges connecting neighboring pairs of nodes. Specifically, it updates the target node features by Eq. [test][1]. The operation captures the hidden information from the target node feature $$\vec{h}_i$$ and also the neighborhood information, captured by $$\vec{h}_j-\vec{h}_i$$.
 
-$$\begin{align*} 
-\text{Eq. 1:}\quad \vec{h}_i' =\max_{j \in \mathcal N_i}\text{MLP}_{\theta}([\vec{h}_i,\vec{h}_j-\vec{h}_i])
-\end{align*}$$
+$$ \text{Eq. 1:}\quad \vec{h}_i' =\max_{j \in \mathcal N_i}\text{MLP}_{\theta}([\vec{h}_i,\vec{h}_j-\vec{h}_i]) $$
 
 The concatenated vector $$[\vec{h}_i,\vec{h}_j-\vec{h}_i]$$ is transformed by a Multilayer perceptron (MLP) and then aggregated by a max operation. 
 
@@ -49,15 +47,9 @@ Edge-Featured Graph Attention Networks (EGAT) [^6] are an extension of Graph Att
 
 First, the node features $$\mathbf{h}$$ and edge features $$\mathbf{e}$$ are transformed by a linear layer (Eq. 2, 3),
 
-$$\begin{align} 
-\text{Eq. 2:}\quad \mathbf{h}^* = \mathbf{W}_{h}\cdot\mathbf{h} \\ 
-\text{Eq. 3:}\quad \mathbf{e}^* = \mathbf{W}_{e}\cdot\mathbf{e}
-\end{align}$$
+$$ \text{Eq. 2:}\quad \mathbf{h}^* = \mathbf{W}_{h}\cdot\mathbf{h}$$
 
-$$\begin{equation} 
-\text{Eq. 2:}\quad \mathbf{h}^* = \mathbf{W}_{h}\cdot\mathbf{h} \\ 
-\text{Eq. 3:}\quad \mathbf{e}^* = \mathbf{W}_{e}\cdot\mathbf{e}
-\end{equation}$$
+$$ \text{Eq. 3:}\quad \mathbf{e}^* = \mathbf{W}_{e}\cdot\mathbf{e}$$
 
 where $$\mathbf{h}^* $$ and $$\mathbf{e}^* $$ are the projected node features and edge features respectively.
 
@@ -65,21 +57,16 @@ where $$\mathbf{h}^* $$ and $$\mathbf{e}^* $$ are the projected node features an
 
 Given a target node $i$, the attention coefficient $$\alpha_{i,j}$$ is calculated by Eq. [\[c3\]](#c3), $$\alpha_{i,j}$$ indicates the importance of the node $j$ to node $i$ jointly considering node and edge features.
 
-$$\begin{align*} 
-\text{Eq. 4:}\quad \alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*} \Vert \vec{h}_j^{*} \Vert \vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i} \Vert \vec{h}^*_{j} \Vert \vec{e}^*_{ij}])}
-\end{align*}$$
+$$ \text{Eq. 4:}\quad \alpha_{i,j}=\frac{\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}_i^{*} \Vert \vec{h}_j^{*} \Vert \vec{e}_{ij}^*])}{\sum_{k \in N(i)}\exp(\text{LeakyReLu}(\mathbf{a}^\mathrm{T}[\vec{h}^*_{i} \Vert \vec{h}^*_{j} \Vert \vec{e}^*_{ij}])}$$
 
 Here, $$\mathbf{a}$$ is a linear layer and $$N(i)$$ is the neighbor nodes of node i in the graph. The node feature $$\vec{h}^{'}_{i}$$ is then updated by calculating a weighted sum of edge-integrated node features over its neighbor nodes, followed by a sigmoid function.
 
-$$\begin{align*} 
-\text{Eq. 5:}\quad \vec{h}'_{i}=\sigma\left(\sum_{j\in N(i)}\alpha_{ij}\mathbf{W}_h^\mathrm{T}[\vec{e}^*_{ij} \Vert \vec{h^*_{j}}]\right)
-\end{align*}$$
+$$ \text{Eq. 5:}\quad \vec{h}'_{i}=\sigma\left(\sum_{j\in N(i)}\alpha_{ij}\mathbf{W}_h^\mathrm{T}[\vec{e}^*_{ij} \Vert \vec{h^*_{j}}]\right) $$
 
 Similar to GAT, we apply multi-head attention and run several independent attention mechanisms to get a stable self-attention mechanism output. Additionally, it allows the model to jointly attend to the information from different representation sub-spaces at different positions. The output of each attention head is concatenated as the final updated node feature $$\vec{h}^{+}_{i}$$.
 
-$$\begin{align*} 
-\text{Eq. 6:}\quad \vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}
-\end{align*}$$
+
+$$ \text{Eq. 6:}\quad \vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$ 
 
 Here, $K$ is the number of attention heads and $$\mathop{\Vert}$$ indicates the concatenation operation.
 
@@ -94,19 +81,19 @@ Successful reconstruction of the important information of the agent environment 
 
 The basis of our GNN training data is the highD dataset [^8], a dataset of vehicle trajectories on highways. We extract fully connected graphs from highD. In our training dataset, graph nodes represent traffic participants and edges represent the relationship between different traffic participants. For node $i$, the position $$(x_i, y_i)$$ acts as the node feature $$\vec{h}_i $$. The edge feature $$\vec{e}_{ij}$$ for the edge between node $i$ and node $j$ consists of the Euclidean distance $$d_{ij}$$ (Eq. [\[euclidean_distance\]](#euclidean_distance), sine of the relative angle $$\sin(\alpha_{ij})$$ (Eq. [\[angle_sin\]](#angle_sin) and cosine of the relative angle $$\cos(\alpha_{ij})$$ (Eq. [\[angle_cos\]](#angle_cos)).
 
-$$\begin{align*} 
-\text{Eq. 7:}\quad d_{ij} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2} \\ 
-\text{Eq. 8:}\quad \sin\alpha_{ij} = \frac{y_i-y_j}{d_{ij}} \\ 
-\text{Eq. 9:}\quad \cos\alpha_{ij} = \frac{x_i-x_j}{d_{ij}}
-\end{align*}$$
+$$ \text{Eq. 7:}\quad d_{ij} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}$$
+$$ \text{Eq. 8:}\quad \sin\alpha_{ij} = \frac{y_i-y_j}{d_{ij}}$$ 
+$$ \text{Eq. 9:}\quad \cos\alpha_{ij} = \frac{x_i-x_j}{d_{ij}}$$
 
 Thus, our constructed graph consists of the node feature vector $$\mathbf{h}$$ (Eq. $12$) and the edge feature vector $$\mathbf{e}$$ (Eq. $13$).
 
-$$\begin{align*} 
-\text{Eq. 10:}\quad \vec{h}_i = [x_i, y_i] \\ 
-\text{Eq. 11:}\quad \vec{e}_{ij} = [d_{ij}, \sin(\alpha_{ij}), \cos\text{Eq. 12:}\quad \mathbf{h} = \{\vec{h}_i \mid i=1,...,N\} \\ 
-\text{Eq. 13:}\quad \mathbf{e} = \{\vec{e}_{ij} \mid i=1,...,N,j=1,...,N_i\} \\ 
-\end{align*}$$
+$$ \text{Eq. 10:}\quad \vec{h}_i = [x_i, y_i] $$
+
+$$ \text{Eq. 11:}\quad \vec{e}_{ij} = [d_{ij}, \sin(\alpha_{ij}), \cos(\alpha_{ij})] $$
+
+$$ \text{Eq. 12:}\quad \mathbf{h} = \{\vec{h}_i \mid i=1,...,N\} $$
+
+$$ \text{Eq. 13:}\quad \mathbf{e} = \{\vec{e}_{ij} \mid i=1,...,N,j=1,...,N_i\} $$
 
 ## Maximum closeness
 
@@ -116,11 +103,11 @@ We divide the area surrounding the ego agent into eight $$45^{\circ}$$ segments 
 
 We define closeness $$c_{i,j} \in [0,1]$$ (Eq. [\[closeness\]](#closeness)) as our proximity measure between the node $i$ (ego agent) and node $j$ (other traffic participants). Unlike the euclidean distance, closeness provides a smooth label and prevents discontinuities resulting from empty regions. $$c_{i,j}$$ is $0$ for all values greater than or equal to $$D_{max}$$ and $1$ if the euclidean distance $$d_{i,j}$$ is $0$. The maximum closeness of node $i$ in angular region $m$ is defined as $${c}^{+}_{i,m}$$ (Eq. [\[closeness_angular_region\]](#closeness_angular_region)). Our ground truth label, $$\mathbf{c}^{+}$$ (Eq. [\[closeness_ground_truth\]](#closeness_ground_truth)), is the vector of the maximum closenesses. 
 
-$$\begin{align*} 
-\text{Eq. 14:}\quad c_{i,j} = 1 - \frac{\min(d_{i,j},D_{max})}{D_{max}} \\
-\text{Eq. 15:}\quad c^{+}_{i,m} = \max_{j \in \mathcal{R}_m}\{c_{ij}\} \\
-\text{Eq. 16:}\quad \mathbf{c}^{+} = \{c^{+}_{i,m} \mid i=1,...,N,m=1,...,8\} \\
-\end{align*}$$
+$$ \text{Eq. 14:}\quad c_{i,j} = 1 - \frac{\min(d_{i,j},D_{max})}{D_{max}}$$
+
+$$ \text{Eq. 15:}\quad c^{+}_{i,m} = \max_{j \in \mathcal{R}_m}\{c_{ij}\}$$
+
+$$ \text{Eq. 16:}\quad \mathbf{c}^{+} = \{c^{+}_{i,m} \mid i=1,...,N,m=1,...,8\}$$
 
 ## Model {#subsection:model}
 
@@ -150,9 +137,7 @@ We use two linear layers as the classification decoder and regression decoder. T
 
 This model is trained with a classification loss $$\mathcal{L}_{cls}$$ and a regression loss $$\mathcal{L}_{reg}$$. The total loss is calculated in Eq. [\[loss\]](#loss), where the design parameter $$\beta$$ allows to balance the weight of the regression loss in relation to the classification loss.
 
-$$\begin{align*} 
-\text{Eq. 17:}\quad \mathcal{L}=\beta\mathcal{L}_{reg} + \mathcal{L}_{cls}
-\end{align*}$$
+$$ \text{Eq. 17:}\quad \mathcal{L}=\beta\mathcal{L}_{reg} + \mathcal{L}_{cls}$$
 
 # Implementation
 
@@ -176,7 +161,7 @@ We use our constructed PyTorch Geometric graph dataset in our experiment. It con
 
 ## Reconstruction performance by using different encoder dimensions
 
-We set up experiments for testing the performance of model using different encoder dimensions. We set the feature dimension of $$E_{cls}$$ and $$E_{reg}$$ to $$8, 16, 32, 64, 128$$ in five experiments respectively, simultaneously, modify the input dimension of the following linear layer to the same dimension and keep other hyperparameters unchanged. The converged loss of each encoder dimension is illustrated in Fig. [4](#converged loss). We can see that models with higher number of dimensions in the encoder output archive a lower converged loss than models with few dimensions.
+We set up experiments for testing the performance of model using different encoder dimensions. We set the feature dimension of $$E_{cls}$$ and $$E_{reg}$$ to $8$, $16$, $32$, $64$, $128$ in five experiments respectively, simultaneously, modify the input dimension of the following linear layer to the same dimension and keep other hyperparameters unchanged. The converged loss of each encoder dimension is illustrated in Fig. [4](#converged loss). We can see that models with higher number of dimensions in the encoder output archive a lower converged loss than models with few dimensions.
 
 Additionally, we observe that even using an encoder dimension of $8$, the model still performs very well. It indicates that we can use a low-dimensional encoder output to represent the agent environment and that we can use it as the input for reinforcement learning agents.
 
@@ -188,19 +173,18 @@ Fig. [5](#scenario-explanation) visualizes the result of the maximum closeness r
 
 To understand our learned representations better, we perform Principal Component Analysis (PCA) on the encoder output of the entire test dataset. Using PCA we can identify clusters in the learned representations. PCA derives a low-dimensional feature set from a higher-dimensional feature set while striving to preserve as much information (i.e. variance) as possible.
 
-We show the results of $2$D PCA decomposition with point density heatmap and $3$D PCA decomposition in Fig.[\[pca-2D\]](#pca-2D) and Fig.[\[pca-3D\]](#pca-3D) respectively. The variance ratio of the three principal components are $$15.17\%$$, $$13.69\%$$ and $$8.37\%$$ respectively. Both $2$D PCA and $3$D PCA show clear clustering.
+We show the results of 2D PCA decomposition with point density heatmap and 3D PCA decomposition in Fig.[\[pca-2D\]](#pca-2D) and Fig.[\[pca-3D\]](#pca-3D) respectively. The variance ratio of the three principal components are $15.17\%$, $13.69\%$ and $8.37\%$ respectively. Both 2D-PCA and 3D PCA show clear clustering.
 
 ![PCA](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca.png)
 
 ![3D PCA](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca-3d.png)
 
-We interpret the PCA results by visualizing traffic scenes at important points of the $2$D PCA heatmap. The most common cluster in the $2$D PCA heatmap is the cluster around the black dot in Fig. 8, corresponding to the scenario in Fig. [\[scenario:2\]](#scenario:2) in which there are close traffic participants around the ego agent. The cluster around the green dot in Fig. 8 is the second most common cluster in the $2$D PCA heatmap. This cluster corresponds to scenarios like Fig. [\[scenario:1\]](#scenario:1) in which there are fewer close traffic participants around ego agent compared to the main cluster. In addition, we observed that clusters in the heatmap with lower point density correspond to scenarios in which, either there are only a few close traffic participants in front of the ego agent, or behind of the ego agent. One example is illustrated in Fig. [\[scenario:4\]](#scenario:4), which corresponds to the red dot in Fig. 8.
+We interpret the PCA results by visualizing traffic scenes at important points of the 2D PCA heatmap. The most common cluster in the 2D PCA heatmap is the cluster around the black dot in Fig. 8, corresponding to the scenario in Fig. [\[scenario:2\]](#scenario:2) in which there are close traffic participants around the ego agent. The cluster around the green dot in Fig. 8 is the second most common cluster in the 2D PCA heatmap. This cluster corresponds to scenarios like Fig. [\[scenario:1\]](#scenario:1) in which there are fewer close traffic participants around ego agent compared to the main cluster. In addition, we observed that clusters in the heatmap with lower point density correspond to scenarios in which, either there are only a few close traffic participants in front of the ego agent, or behind of the ego agent. One example is illustrated in Fig. [\[scenario:4\]](#scenario:4), which corresponds to the red dot in Fig. 8.
 
 We can conclude, that clusters in the learned representations correspond to actual clusters in the surrounding environment from the perspective of the ego agent. It indicates the learned representations contain the latent information from the surrounding environment and can be used as meaningful representations for subsequent reinforcement learning problems.
 
-[]{#pca:points label="pca:points"} ![image](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca-points.png)
+![image](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca-points.png)
 
-[]{#pca-interpretation label="pca-interpretation"}
 ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-1.png)
 
 ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-2.png)
