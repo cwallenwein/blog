@@ -173,7 +173,7 @@ Fig. [5](#scenario-explanation) visualizes the result of the maximum closeness r
 
 To understand our learned representations better, we perform Principal Component Analysis (PCA) on the encoder output of the entire test dataset. Using PCA we can identify clusters in the learned representations. PCA derives a low-dimensional feature set from a higher-dimensional feature set while striving to preserve as much information (i.e. variance) as possible.
 
-We show the results of 2D PCA decomposition with point density heatmap and 3D PCA decomposition in Fig.[\[pca-2D\]](#pca-2D) and Fig.[\[pca-3D\]](#pca-3D) respectively. The variance ratio of the three principal components are $15.17\%$, $13.69\%$ and $8.37\%$ respectively. Both 2D-PCA and 3D PCA show clear clustering.
+We show the results of $2D$ PCA decomposition with point density heatmap and 3D PCA decomposition in Fig.[\[pca-2D\]](#pca-2D) and Fig.[\[pca-3D\]](#pca-3D) respectively. The variance ratio of the three principal components are $15.17\%$, $13.69\%$ and $8.37\%$ respectively. Both 2D PCA and 3D PCA show clear clustering.
 
 ![PCA](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca.png)
 
