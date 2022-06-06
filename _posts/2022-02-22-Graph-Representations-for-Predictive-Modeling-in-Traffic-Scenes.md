@@ -67,8 +67,10 @@ $$ \vec{h}'_{i}=\sigma\left(\sum_{j\in N(i)}\alpha_{ij}\mathbf{W}_h^\mathrm{T}[\
 
 Similar to GAT, we apply multi-head attention and run several independent attention mechanisms to get a stable self-attention mechanism output. Additionally, it allows the model to jointly attend to the information from different representation sub-spaces at different positions. The output of each attention head is concatenated as the final updated node feature $$\vec{h}^{+}_{i}$$.
 
-<a name="test1"></a>
-$$\vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$ 
+$$ \text{Eq. 1:} \vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i}$$ 
+
+
+$$ \begin{aligned} \vec{h}^{+}_{i}=\mathop{\Vert}\limits_{k=1}^{K}\vec{h}^{k'}_{i} \end{aligned}$$ 
 
 Here, $K$ is the number of attention heads and $$\mathop{\Vert}$$ indicates the concatenation operation.
 
