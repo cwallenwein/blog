@@ -508,7 +508,7 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
 
 <p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-model.png" alt="Model implementation" /></p>
 
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png" alt="Visualization implementation" title="Fig. 4. Class diagram of our implementation, bundled in the Python package *traffic_ scene_representation* and its most important dependencies. (a) The *extraction* subpackage. (b) The *model* subpackage (c) The *visualization* subpackage." /></p>
+<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png" alt="Visualization implementation" title="Fig. 4. Class diagram of our implementation, bundled in the Python package traffic_ scene_representation and its most important dependencies. (a) The extraction subpackage. (b) The model subpackage (c) The visualization subpackage." /></p>
 
 <p>Our package <em>traffic_scene_representation</em> is split into three subpackages: extraction, model and visualization (see Fig. <a href="#implementation">[implementation]</a>). The extraction package contains two classes: <em>extractor</em> which extends the <em>CommonRoad Geometric</em> class <em>StandardTrafficExtractor</em> and <em>collector</em> which extends the <em>CommonRoad Geometric</em> class <em>BaseDatasetCollector</em>. <em>extractor</em> is responsible for extracting one PyTorch Geometric graph data object from a single scenario and timestep as described in Subsection <a href="#subsection:graph_extraction">3.1</a>. The class <em>collector</em> is responsible for collecting the entire training and test dataset from the highD dataset and saving the files to the disk. Furthermore, we built a GNN model as described in <a href="#subsection:model">3.3</a> using PyTorch Geometric. For building the GNN model, we implement three neural network layers, namely the classes <em>EGATConvs</em>, <em>EdgeConv</em> and <em>MLP</em>. The entire model is implemented in the class <em>TrafficRepresentationNet</em>. Additionally, we provide the tools to perform PCA decomposition on all encoder outputs. We also provide a simple set of visualization scripts, combined in the subpackage <em>visualization</em>, that can render the different traffic participants, the lanes and the prediction results. It can also visualize the PCA decomposition heatmap. This is useful for debugging and showcasing purposes. It is written using the Python libraries Pillow, a popular Python library for image manipulation and matplotlib, a commonly use plotting library.</p>
 
@@ -546,9 +546,20 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
 
 <p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/pca-points.png" alt="image" /></p>
 
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-1.png" alt="" /></p>
-
-<p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-2.png" alt="" /></p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Test</th>
+      <th style="text-align: center">Test</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-1.png" alt="" /></td>
+      <td style="text-align: center"><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-2.png" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
 
 <p><img src="/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/scenario-3.png" alt="" /></p>
 
