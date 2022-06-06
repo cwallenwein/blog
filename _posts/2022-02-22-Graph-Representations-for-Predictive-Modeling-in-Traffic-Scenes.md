@@ -54,6 +54,11 @@ $$\begin{align}
 \text{Eq. 3:}\quad \mathbf{e}^* = \mathbf{W}_{e}\cdot\mathbf{e}
 \end{align}$$
 
+$$\begin{equation} 
+\text{Eq. 2:}\quad \mathbf{h}^* = \mathbf{W}_{h}\cdot\mathbf{h} \\ 
+\text{Eq. 3:}\quad \mathbf{e}^* = \mathbf{W}_{e}\cdot\mathbf{e}
+\end{equation}$$
+
 where $$\mathbf{h}^* $$ and $$\mathbf{e}^* $$ are the projected node features and edge features respectively.
 
 ### Edge enhanced attention
