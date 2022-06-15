@@ -145,9 +145,11 @@ $$ \text{Eq. 17:}\quad \mathcal{L}=\beta\mathcal{L}_{reg} + \mathcal{L}_{cls}$$
 
 Our implementation uses the CommonRoad-Geometric package developed at the chair of Robotics, Artificial Intelligence and Embedded Systems at the Technical University of Munich (TUM). CommonRoad-Geometric is a geometric deep learning library for autonomous driving that we use to extract graph data from traffic scenarios. It is built on top of PyTorch Geometric [^9] and the CommonRoad framework [^10]. CommonRoad is a collection of benchmarks for autonomous driving that enable reproducibility and PyTorch Geometric is a popular PyTorch [^11] based library for deep learning on graphs. As explained in Subsection [3.1](#subsection:graph_extraction), we use highD as the basis of our training data.
 
-| ![Extraction implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-extraction.png "(a)") |
-| ![Model implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-model.png "(b)") |
-| ![Visualization implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png "(c)") |
+![Extraction implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-extraction.png "(a)")
+
+![Model implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-model.png "(b)") 
+
+![Visualization implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png "(c)") 
 
 ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/divider.png "Fig. 4. Class diagram of our implementation, bundled in the Python package traffic_ scene_representation and its most important dependencies. (a) The extraction subpackage. (b) The model subpackage (c) The visualization subpackage.")
 
