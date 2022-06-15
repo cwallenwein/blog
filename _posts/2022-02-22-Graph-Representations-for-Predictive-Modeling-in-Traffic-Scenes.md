@@ -147,9 +147,12 @@ Our implementation uses the CommonRoad-Geometric package developed at the chair 
 
 ![Extraction implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-extraction.png "(a)")
 
+
 ![Model implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-model.png "(b)") 
 
+
 ![Visualization implementation](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/implementation-visualization.png "(c)") 
+
 
 ![](/images/post/2022-02-22-Graph-Representations-for-Predictive-Modeling-in-Traffic-Scenes/divider.png "Fig. 4. Class diagram of our implementation, bundled in the Python package traffic_ scene_representation and its most important dependencies. (a) The extraction subpackage. (b) The model subpackage (c) The visualization subpackage.")
 
